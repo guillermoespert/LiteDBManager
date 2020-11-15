@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="LiteDBManager.UIElements.DocumentViewer.DocumentViewerLine"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LiteDBManager.UIElements.DocumentViewer"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:liteDb="clr-namespace:LiteDB;assembly=LiteDB"
+             mc:Ignorable="d" 
+             d:DesignHeight="16" d:DesignWidth="400" Height="16" MaxHeight="16">
+
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="objectDataTypes" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="liteDb:BsonType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    <Grid x:Name="controlGrid" PreviewMouseMove="controlGrid_PreviewMouseMove" MouseLeave="controlGrid_MouseLeave" Background="#00000000">
+        <Border x:Name="controlBorder" VerticalAlignment="Top" Height="16" Margin="0,0,100,0" Grid.ColumnSpan="2">
+            <StackPanel x:Name="stpEditLine" Orientation="Horizontal">
+                <TextBlock x:Name="tbkLineNumber" TextWrapping="Wrap" Text="9999" FontFamily="Consolas" Padding="0,0,5,0" Width="32"/>
+                <Button x:Name="btnFolding" Width="12" Background="#00000000" BorderBrush="{x:Null}" Foreground="{x:Null}" Padding="0" Height="12" Visibility="Hidden" Click="btnFolding_Click">
+                    <Image x:Name="imgFoldingCaret" Source="/LiteDBManager;component/Resources/icons8-forward-24.png" Stretch="Fill" d:IsLocked="True"/>
+                </Button>
+                <TextBox x:Name="tbxVariable" TextWrapping="Wrap" Style="{DynamicResource InlineEditorTextBox}" KeyDown="tbxVariable_KeyDown" PreviewMouseDoubleClick="tbxVariable_PreviewMouseDoubleClick" PreviewMouseDown="tbxVariable_PreviewMouseDown" LostFocus="tbxVariable_LostFocus" FontFamily="Consolas" MouseMove="tbxVariable_MouseMove" MinWidth="20"/>
+
+                <TextBlock x:Name="tbkDoubleDot" TextWrapping="Wrap" Text=":" Padding="15,0" FontFamily="Consolas"/>
+                <TextBlock x:Name="openingString" TextWrapping="Wrap" Text="&quot;" Visibility="Collapsed"/>
+                <TextBox x:Name="tbxValue" TextWrapping="Wrap" Style="{DynamicResource InlineEditorTextBox}" FontFamily="Consolas" PreviewMouseDown="tbxValue_PreviewMouseDown" PreviewMouseDoubleClick="tbxValue_PreviewMouseDoubleClick" LostFocus="tbxValue_LostFocus" KeyDown="tbxValue_KeyDown" MouseMove="tbxValue_MouseMove" MinWidth="20"/>
+                <TextBlock x:Name="closingString" TextWrapping="Wrap" Text="&quot;" Visibility="Collapsed"/>
+                <StackPanel x:Name="stpEditButtons" Margin="30,0,0,0" Orientation="Horizontal" Visibility="Hidden">
+                    <Button x:Name="btnAddLine" Style="{DynamicResource TransparentButton}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="16" Height="16" MouseMove="btnAddLine_MouseMove" MouseLeave="btnAddLine_MouseLeave" ToolTip="Añadir una línea a continuación" Click="btnAddLine_Click">
+                        <Image x:Name="image" Source="/LiteDBManager;component/Resources/icons8-add-48.png" Margin="0,0,0,1" Width="15" Height="15" d:IsLocked="True"/>
+                    </Button>
+                    <Button x:Name="btnDeleteLine" Width="16" Style="{DynamicResource TransparentButton}" Height="16" Margin="5,0,0,0" MouseMove="btnDeleteLine_MouseMove" MouseLeave="btnDeleteLine_MouseLeave" ToolTip="Eliminar esta línea" Click="btnDeleteLine_Click">
+                        <Image x:Name="image1" Height="15" Width="15" Source="/LiteDBManager;component/Resources/icons8-remove-96.png" Margin="0,0,0,1"/>
+                    </Button>
+                </StackPanel>
+
+            </StackPanel>
+        </Border>
+        <StackPanel x:Name="editObjectType" Margin="0" Orientation="Horizontal" Width="100" HorizontalAlignment="Right" Visibility="Hidden" Grid.Column="1">
+            <ComboBox x:Name="cbxObjectType" Margin="0,0,4,0" HorizontalAlignment="Right" Width="96" Height="16" SelectedIndex="0" ItemsSource="{Binding Source={StaticResource objectDataTypes}}" FontFamily="Consolas" FontSize="9" SelectionChanged="cbxObjectType_SelectionChanged" MouseMove="cbxObjectType_MouseMove" DropDownClosed="cbxObjectType_DropDownClosed" />
+        </StackPanel>
+        <StackPanel x:Name="showObjectType" Margin="0" Orientation="Horizontal" Width="100" HorizontalAlignment="Right" Grid.Column="1">
+            <TextBlock x:Name="txtObjectType" TextWrapping="Wrap"  FontFamily="Consolas" Text=" " Width="80" MouseUp="txtObjectType_MouseDown"/>
+            <Image HorizontalAlignment="Right" Width="16" Height="16" Margin="0,0,4,0" MouseUp="txtObjectType_MouseDown" Focusable="True" Source="/LiteDBManager;component/Resources/icons8-drop-down-24.png"  />
+        </StackPanel>
+    </Grid>
+</UserControl>
