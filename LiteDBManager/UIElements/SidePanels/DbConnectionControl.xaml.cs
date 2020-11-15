@@ -15,6 +15,8 @@ namespace LiteDBManager.UIElements
     {
         private DbConnection DbConnection;
 
+        public bool ConnectionOpened { get; set; }
+
         public DbConnectionControl(DbConnection dbconn)
         {
             DbConnection = dbconn;
@@ -26,23 +28,33 @@ namespace LiteDBManager.UIElements
 
         private void UserControl_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            LoadConnection();
+            if(!ConnectionOpened)
+                LoadConnection();
         }
 
         public void LoadConnection()
         {
             MainService.UnselectAllConnections();
 
-            if(DbConnection == null)
-                DbConnection = DbConnections.CurrentConnection;
+            if(DbConnection != null)
+                DbConnections.CurrentConnection = DbConnection;
 
             tbkConnectionStatus.Text = "Conectado";
             tbkFilename.Text = Path.GetFileName(DbConnection.ConnectionData.Filename);
             Background = Brushes.LightGreen;
+            ConnectionOpened = true;
 
             PageNavigationService.ShowPage(DbConnection.CollectionManagementPage);
 
             MainService.UpdateCollections();
+        }
+
+        private void btnCloseConnection_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            DbConnection?.LiteDatabase.Checkpoint();
+            DbConnection?.LiteDatabase.Dispose();
+
+            MainService.RemoveConnection(DbConnection);
         }
     }
 }

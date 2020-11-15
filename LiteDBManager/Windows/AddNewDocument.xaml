@@ -4,12 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LiteDBManager.Windows"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:Structures="clr-namespace:LiteDBManager.Structures"
         mc:Ignorable="d"
-        Title="Añadir nuevo documento" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" d:DesignWidth="505.499" d:DesignHeight="136.562">
-    <Grid>
-        <Label x:Name="label" Content="Tipo del identificador de documento (_id)" HorizontalAlignment="Left" Margin="20,65,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="282,65,0,0" VerticalAlignment="Top" Width="190"/>
+        Title="Añadir nuevo documento" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" d:DesignWidth="505.499" Width="505" Height="181.072" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="idTypes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="Structures:DbIdTypes" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <Grid DataContext="{Binding Source={StaticResource idTypes}}">
+        <Label x:Name="label" Content="Tipo del identificador de documento (_id)" HorizontalAlignment="Left" Margin="20,61,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cbxIdType" HorizontalAlignment="Left" Margin="282,65,0,0" VerticalAlignment="Top" Width="190" ItemsSource="{Binding Mode=OneWay}" SelectedItem="{Binding Mode=OneWay}" />
         <TextBlock x:Name="label1"  Text="Por favor seleccione el tipo de datos que será utilizado para la creación del identificador de documento (_id)." Margin="20,15,20,0" VerticalAlignment="Top" TextWrapping="Wrap"/>
+        <Button x:Name="btnCancel" Content="Cancelar" HorizontalAlignment="Left" Margin="20,111,0,0" VerticalAlignment="Top" Width="75" Click="btnCancel_Click"/>
+        <Button x:Name="btnAddDocument" Content="Añadir" HorizontalAlignment="Right" Margin="0,111,20,0" VerticalAlignment="Top" Width="75" Click="btnAddDocument_Click"/>
 
     </Grid>
 </Window>

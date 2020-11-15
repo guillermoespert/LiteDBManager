@@ -6,6 +6,12 @@ using System.Windows.Media;
 
 namespace LiteDBManager.Services
 {
+    /// <summary>
+    /// Esta clase representa una interfaz de comunicación o façade con la clase de la
+    /// ventana principal.
+    /// Provee de métodos que realizan operaciones sobre la interfaz de usuario y sobre
+    /// estructuras de datos auxiliares.
+    /// </summary>
     public class MainService
     {
         public static MainWindow MainWindow { get { return Application.Current.MainWindow as MainWindow; } }
@@ -16,15 +22,29 @@ namespace LiteDBManager.Services
         /// Este método necesita un ConnectionString para añadir la nueva conexión.
         /// No importa si la operación es de apertura de archivo existente o bien de
         /// la creación de una nueva base de datos.
+        /// Las conexiones creadas con este método se insertan en la lista de conexiones.
         /// </summary>
-        /// <param name="connString"></param>
+        /// <param name="connString">Objeto de metadatos de conexión</param>
         public static void AddNewConnection(ConnectionString connString)
+        {
+            var conn = new DbConnection(connString);
+            DbConnections.Connections.Add(conn);
+
+            AddNewConnection(conn);
+        }
+
+        /// <summary>
+        /// Realiza todas las operaciones para crear una nueva conexión con una base de datos.
+        /// Actualiza todos los elementos de la IU así como cualquier estructura de datos.
+        /// Este método necesita un ConnectionString para añadir la nueva conexión.
+        /// No importa si la operación es de apertura de archivo existente o bien de
+        /// la creación de una nueva base de datos.
+        /// </summary>
+        /// <param name="dbConnection">Conexión a base de datos</param>
+        public static void AddNewConnection(DbConnection dbConnection)
         {
             var main = Application.Current.MainWindow as MainWindow;
 
-            DbConnection dbConnection = new DbConnection(connString);
-
-            DbConnections.Connections.Add(dbConnection);
             DbConnections.CurrentConnection = dbConnection;
 
             DbConnectionControl dbcon = new DbConnectionControl(dbConnection);
@@ -70,8 +90,38 @@ namespace LiteDBManager.Services
                 
                 if(connection != null)
                 {
+                    connection.ConnectionOpened = false;
                     connection.Background = Brushes.White;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Elimina una conexión de la lista de conexiones y reestablece la
+        /// interfaz recargando una nueva conexión existente o limpia
+        /// completamente la interfaz si no hay más conexiones activas.
+        /// </summary>
+        /// <param name="dbconnection">Conexión que debe ser eliminada</param>
+        public static void RemoveConnection(DbConnection dbconnection)
+        {
+            var main = Application.Current.MainWindow as MainWindow;
+
+            DbConnections.Connections.Remove(dbconnection);
+            DbConnections.CurrentConnection = null;
+            main.stpConnections.Children.Clear();
+            UnselectAllConnections();
+            
+            foreach(var connection in DbConnections.Connections)
+            {
+                AddNewConnection(connection);
+            }
+
+            if (DbConnections.CurrentConnection != null)
+                UpdateCollections();
+            else
+            {
+                main.stpCollections.Children.Clear();
+                main.frmDbManager.Content = null;
             }
         }
     }

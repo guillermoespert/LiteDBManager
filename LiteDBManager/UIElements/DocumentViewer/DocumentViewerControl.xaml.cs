@@ -4,6 +4,8 @@ using LiteDB;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System;
 
 namespace LiteDBManager.UIElements.DocumentViewer
 {
@@ -29,6 +31,8 @@ namespace LiteDBManager.UIElements.DocumentViewer
         public int LineCounter { get; private set; } = 0;
 
         public bool IsEditing { get; private set; }
+
+        public event EventHandler<EventArgs> DeleteDocument;
 
         public DocumentViewerControl(BsonValue document)
         {
@@ -155,8 +159,13 @@ namespace LiteDBManager.UIElements.DocumentViewer
 
         private void Children_LineStartedEdition(object sender, System.EventArgs e)
         {
+            ActivateEditionMode();
+        }
+
+        public void ActivateEditionMode()
+        {
             //Activar el modo edición
-            foreach(var child in stpLinesContainer.Children)
+            foreach (var child in stpLinesContainer.Children)
             {
                 var line = child as DocumentViewerLine;
                 line.IsInEditionMode = true;
@@ -165,6 +174,7 @@ namespace LiteDBManager.UIElements.DocumentViewer
             IsEditing = true;
             stpLinesContainer.Margin = new Thickness(5, 2, 0, 32);
             paneEdition.Visibility = Visibility.Visible;
+            btnDeleteDocument.Visibility = Visibility.Hidden;
         }
 
         private void FoldableStartLine_FoldActionRequest(object sender, FoldEventArgs e)
@@ -350,6 +360,36 @@ namespace LiteDBManager.UIElements.DocumentViewer
                     }
                 }
             }
+        }
+
+        private void Border_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if(!IsEditing && !btnDeleteDocument.IsMouseOver)
+            {
+                brdControlBorder.BorderBrush = Brushes.CornflowerBlue;
+                btnDeleteDocument.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void brdControlBorder_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            brdControlBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(199, 191, 191));
+            btnDeleteDocument.Visibility = Visibility.Hidden;       
+        }
+
+        private void UserControl_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            ActivateEditionMode();
+        }
+
+        private void btnDeleteDocument_PreviewMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            brdControlBorder.BorderBrush = Brushes.Red;
+        }
+
+        private void btnDeleteDocument_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteDocument?.Invoke(this, new EventArgs());
         }
     }
 }

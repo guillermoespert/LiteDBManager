@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace LiteDBManager.Services
 {
+    /// <summary>
+    /// Esta clase actúa como contenedor principal de almacenamiento de las conexiones abiertas
+    /// con las diferentes bases de datos.
+    /// </summary>
     public class DbConnections
     {
         /// <summary>
@@ -14,6 +18,10 @@ namespace LiteDBManager.Services
         /// </summary>
         public static List<DbConnection> Connections { get; } = new List<DbConnection>();
 
+        /// <summary>
+        /// Contiene una referencia a la conexión activa. La conexión activa
+        /// es aquella que está siendo mostrada en la interfaz.
+        /// </summary>
         public static DbConnection CurrentConnection { get; set; }
     }
 }

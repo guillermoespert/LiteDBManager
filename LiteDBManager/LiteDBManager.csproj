@@ -66,7 +66,9 @@
     <Compile Include="Services\DbConnections.cs" />
     <Compile Include="Services\MainService.cs" />
     <Compile Include="Services\PageNavigationService.cs" />
+    <Compile Include="Services\SqlServices.cs" />
     <Compile Include="Structures\DbConnection.cs" />
+    <Compile Include="Structures\DbIdTypes.cs" />
     <Compile Include="UIElements\DocumentViewer\DocumentViewerControl.xaml.cs">
       <DependentUpon>DocumentViewerControl.xaml</DependentUpon>
     </Compile>
@@ -96,8 +98,8 @@
     <Compile Include="Windows\AddCollection.xaml.cs">
       <DependentUpon>AddCollection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Connection.xaml.cs">
-      <DependentUpon>Connection.xaml</DependentUpon>
+    <Compile Include="Windows\DbConnection.xaml.cs">
+      <DependentUpon>DbConnection.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\CreateDb.xaml.cs">
       <DependentUpon>CreateDb.xaml</DependentUpon>
@@ -157,7 +159,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\Connection.xaml">
+    <Page Include="Windows\DbConnection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

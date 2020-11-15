@@ -30,7 +30,7 @@ namespace LiteDBManager
         private void btnOpenDB_Click(object sender, RoutedEventArgs e)
         {
             ConnectionString ConnectionData = new ConnectionString();
-            Connection con = new Connection(ConnectionData);
+            DbConnection con = new DbConnection(ConnectionData);
             con.Owner = this;
 
             if(con.ShowDialog().Value)

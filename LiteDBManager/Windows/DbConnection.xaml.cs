@@ -8,13 +8,13 @@ namespace LiteDBManager.Windows
     /// <summary>
     /// Lógica de interacción para Connection.xaml
     /// </summary>
-    public partial class Connection : Window
+    public partial class DbConnection : Window
     {
-        public ConnectionString DbConnection { get; private set; }
+        public ConnectionString ConnectionString { get; private set; }
 
-        public Connection(ConnectionString dbConnection)
+        public DbConnection(ConnectionString dbConnection)
         {
-            DbConnection = dbConnection;
+            ConnectionString = dbConnection;
             InitializeComponent();
         }
 
@@ -33,7 +33,7 @@ namespace LiteDBManager.Windows
         private void btnOptions_Click(object sender, RoutedEventArgs e)
         {
             DbOptions dbo = new DbOptions(DbOptionEditModes.Connect);
-            dbo.DbConnection = DbConnection;
+            dbo.DbConnection = ConnectionString;
             dbo.Owner = this;
             dbo.ShowDialog();
         }
@@ -58,7 +58,7 @@ namespace LiteDBManager.Windows
                 return;
             }
 
-            DbConnection.Filename = txtDbPath.Text;
+            ConnectionString.Filename = txtDbPath.Text;
 
             DialogResult = true;
         }
