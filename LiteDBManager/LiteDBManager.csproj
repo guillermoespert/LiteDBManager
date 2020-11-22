@@ -95,6 +95,9 @@
       <DependentUpon>DocumentViewerContainer.xaml</DependentUpon>
     </Compile>
     <Compile Include="UIElements\InlineDisplayFoldingStrategy.cs" />
+    <Compile Include="Windows\RenameCollection.xaml.cs">
+      <DependentUpon>RenameCollection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\AddCollection.xaml.cs">
       <DependentUpon>AddCollection.xaml</DependentUpon>
     </Compile>
@@ -155,6 +158,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\RenameCollection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Windows\AddCollection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -194,6 +201,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

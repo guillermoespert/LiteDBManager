@@ -31,10 +31,9 @@ namespace LiteDBManager.UIElements
 
             if(result == MessageBoxResult.Yes)
             {
-                var db = DbConnections.CurrentConnection.LiteDatabase;
-                db.Execute("DROP COLLECTION " + CollectionName);
-                db.Execute("COMMIT");
+                SqlServices.DeleteCollection(CollectionName);
                 MainService.UpdateCollections();
+                DbConnections.CurrentConnection.CollectionManagementPage.LoadCollections();
             }
         }
 

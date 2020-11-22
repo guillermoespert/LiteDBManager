@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="LiteDBManager.App" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LiteDBManager.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAABAAAAEAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LiteDBManager.Properties.Resources" Collapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAIAAAAABIAAAAABEIAAAQAAAAAAAAAAAQAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LiteDBManager.Properties.Settings" Collapsed="true">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAEAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LiteDBManager.Services.DbConnections" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Services\DbConnections.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LiteDBManager.Services.MainService" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAEACEAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Services\MainService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LiteDBManager.Services.PageNavigationService" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAQAAAI=</HashCode>
+      <FileName>Services\PageNavigationService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LiteDBManager.Services.SqlServices" Collapsed="true">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\SqlServices.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LiteDBManager.Structures.DbConnection" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAkAAAAAAAAAAAgAAAABAAgAAgAQAAAAAAAAAAA=</HashCode>
+      <FileName>Structures\DbConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LiteDBManager.UIElements.DocumentViewerContainer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAgAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>UIElements\DocumentViewer\DocumentViewerContainer.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LiteDBManager.UIElements.InlineDisplayFoldingStrategy" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAACAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>UIElements\InlineDisplayFoldingStrategy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LiteDBManager.UIElements.CollectionsManagementPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>UIElements\Pages\CollectionsManagementPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LiteDBManager.UIElements.DocumentManagementPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgACAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>UIElements\Pages\DocumentManagementPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LiteDBManager.UIElements.DbCollectionControl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>UIElements\SidePanels\DbCollectionControl.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LiteDBManager.UIElements.DbConnectionControl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAABAAAQAAAAAAAAQAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>UIElements\SidePanels\DbConnectionControl.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LiteDBManager.UIElements.DocumentViewer.DocumentViewerControl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACABCRgEiEAAgAABQQGAAAABAAAACAIABAIAAAAA=</HashCode>
+      <FileName>UIElements\DocumentViewer\DocumentViewerControl.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LiteDBManager.UIElements.DocumentViewer.DocumentViewerLine" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>B0jYCkAiFMxBkAThkgXJABwICgBSAgECQJgTQIlAEQI=</HashCode>
+      <FileName>UIElements\DocumentViewer\DocumentViewerLine.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LiteDBManager.UIElements.DocumentViewer.FoldEventArgs" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UIElements\DocumentViewer\FoldEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LiteDBManager.UIElements.DocumentViewer.LineEventArgs" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UIElements\DocumentViewer\LineEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LiteDBManager.Windows.AddCollection" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Windows\AddCollection.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LiteDBManager.Windows.AddNewDocument" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAEAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Windows\AddNewDocument.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LiteDBManager.Windows.CreateDb" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAGAAAAAAIAAAAAAAAEAAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Windows\CreateDb.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LiteDBManager.Windows.DbConnection" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAEIAAAAABAAAACAAAAAAAAA=</HashCode>
+      <FileName>Windows\DbConnection.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LiteDBManager.Windows.DbOptions" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACQAAAAAAAQAAAAAAEMAIAQAQBAACAAAAAAAAAA=</HashCode>
+      <FileName>Windows\DbOptions.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Struct Name="LiteDBManager.UIElements.DocumentViewer.FoldingGroup" Collapsed="true">
+    <Position X="0.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>UIElements\DocumentViewer\FoldingGroup.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="LiteDBManager.Structures.DbIdTypes" Collapsed="true">
+    <Position X="0.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAJAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Structures\DbIdTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="LiteDBManager.UIElements.DocumentViewer.LineType" Collapsed="true">
+    <Position X="4" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACQAgAAAAAABAIAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UIElements\DocumentViewer\LineType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="LiteDBManager.Windows.DbOptionEditModes" Collapsed="true">
+    <Position X="2.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Windows\DbOptionEditModes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
