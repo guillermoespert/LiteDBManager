@@ -1,9 +1,15 @@
-﻿using LiteDBManager.Services;
+﻿using Ldb = LiteDB;
+using LiteDBManager.Services;
+using LiteDBManager.Structures;
 using LiteDBManager.Windows;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Text.Json;
+using Microsoft.Win32;
 
 namespace LiteDBManager.UIElements
 {
@@ -120,6 +126,23 @@ namespace LiteDBManager.UIElements
                     MainService.UpdateCollections();
                     LoadCollections();
                     DbConnections.CurrentConnection.DocumentManagementPages[collectionName].LoadDocuments();
+                }
+            }
+        }
+
+        private void btnExport_Click(object sender, RoutedEventArgs e)
+        {
+            if(dgCollections.SelectedItems.Count > 0)
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.CheckPathExists = true;
+                sfd.Filter = "Archivos JSON (*.json)|*.json|Archivos XML (*.xml)|*.xml";
+
+                if (sfd.ShowDialog().Value)
+                {
+                    var collections = new string[dgCollections.SelectedItems.Count];
+                    dgCollections.SelectedItems.CopyTo(collections, 0);
+                    SerializeServices.SerializeToJson(collections, sfd.FileName);
                 }
             }
         }

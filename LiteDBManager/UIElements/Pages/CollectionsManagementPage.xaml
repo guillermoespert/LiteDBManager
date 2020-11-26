@@ -15,7 +15,11 @@
                 <TextBlock x:Name="textBlock" TextWrapping="Wrap" Text="Colecciones - " FontSize="16" FontWeight="Bold"/>
                 <TextBlock x:Name="tbkFilename" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Archivo" VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
             </StackPanel>
-            <Button x:Name="btnAddCollection" Content="Añadir colección" HorizontalAlignment="Right" Margin="0,10,10,10" VerticalAlignment="Center" Width="119" Click="btnAddCollection_Click"/>
+            <StackPanel Margin="0,10,11,10" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="btnAddCollection" Content="Añadir colección" HorizontalAlignment="Right" VerticalAlignment="Center" Width="119" Click="btnAddCollection_Click" Margin="0,0,15,0"/>
+                <Button x:Name="btnImport" Content="Importar" HorizontalAlignment="Right" VerticalAlignment="Center" Width="75" Margin="0,0,15,0"/>
+                <Button x:Name="btnExport" Content="Exportar" HorizontalAlignment="Right" VerticalAlignment="Center" Width="75" Margin="0" Click="btnExport_Click"/>
+            </StackPanel>
         </Grid>
         <DataGrid x:Name="dgCollections" Margin="10,0,10,10" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" MouseDoubleClick="dgCollections_MouseDoubleClick">
             <DataGrid.Columns>
