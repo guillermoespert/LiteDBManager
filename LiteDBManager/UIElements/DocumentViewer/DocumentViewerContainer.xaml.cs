@@ -28,6 +28,11 @@ namespace LiteDBManager.UIElements
             InitializeComponent();
         }
 
+        public int CountSelectedDocuments
+        {
+            get { return SelectedDocumentsCounter(); }
+        }
+
         public void LoadDocuments(IList<BsonValue> values)
         {
             foreach(var value in values)
@@ -53,6 +58,41 @@ namespace LiteDBManager.UIElements
         public void ClearAllDocuments()
         {
             stpDocumentsContainer.Children.Clear();
+        }
+
+        private int SelectedDocumentsCounter()
+        {
+            int count = 0;
+
+            foreach(DocumentViewerControl child in stpDocumentsContainer.Children)
+            {
+                if (child.IsSelected)
+                    count++;
+            }
+
+            return count;
+        }
+
+        public List<BsonValue> GetSelectedDocuments()
+        {
+            List<BsonValue> documents = new List<BsonValue>();
+
+            foreach (DocumentViewerControl child in stpDocumentsContainer.Children)
+            {
+                if (child.IsSelected)
+                {
+                    if(!child.IsEditing)
+                    {
+                        documents.Add(child.Document);
+                    }
+                    else
+                    {
+                        MessageBox.Show(MainService.MainWindow, "No se pueden importar colecciones que estén siendo editadas. Por favor termine la edición antes de importar", "Acción no permitida", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    }
+                }
+            }
+
+            return documents;
         }
     }
 }

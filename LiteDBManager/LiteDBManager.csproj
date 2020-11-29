@@ -92,13 +92,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data\JsonSerializer.cs" />
+    <Compile Include="Data\Serializer.cs" />
+    <Compile Include="Data\XmlSerializer.cs" />
+    <Compile Include="Services\DataOperationsService.cs" />
     <Compile Include="Services\DbConnections.cs" />
     <Compile Include="Services\MainService.cs" />
     <Compile Include="Services\PageNavigationService.cs" />
-    <Compile Include="Services\SerializeServices.cs" />
     <Compile Include="Services\SqlServices.cs" />
     <Compile Include="Structures\CollectionDO.cs" />
     <Compile Include="Structures\CollectionsWrapperDO.cs" />
+    <Compile Include="Structures\DataOperations.cs" />
     <Compile Include="Structures\DbConnection.cs" />
     <Compile Include="Structures\DbIdTypes.cs" />
     <Compile Include="UIElements\DocumentViewer\DocumentViewerControl.xaml.cs">

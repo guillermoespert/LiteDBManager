@@ -142,8 +142,23 @@ namespace LiteDBManager.UIElements
                 {
                     var collections = new string[dgCollections.SelectedItems.Count];
                     dgCollections.SelectedItems.CopyTo(collections, 0);
-                    SerializeServices.SerializeToJson(collections, sfd.FileName);
+                    DataOperationsService.ExportData(collections, sfd.FileName);
                 }
+            }
+        }
+
+        private void btnImport_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.CheckPathExists = true;
+            ofd.CheckFileExists = true;
+            ofd.Filter = "Archivos JSON (*.json)|*.json|Archivos XML (*.xml)|*.xml";
+
+            if (ofd.ShowDialog().Value)
+            {
+                DataOperationsService.ImportData(ofd.FileName, DataOperations.ImportCollections);
+                LoadCollections();
+                MainService.UpdateCollections();
             }
         }
     }

@@ -34,6 +34,8 @@ namespace LiteDBManager.UIElements.DocumentViewer
 
         public event EventHandler<EventArgs> DeleteDocument;
 
+        public bool IsSelected { get; set; }
+
         public DocumentViewerControl(BsonValue document)
         {
             Document = document;
@@ -373,8 +375,16 @@ namespace LiteDBManager.UIElements.DocumentViewer
 
         private void brdControlBorder_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            brdControlBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(199, 191, 191));
-            btnDeleteDocument.Visibility = Visibility.Hidden;       
+            if (!IsSelected)
+            {
+                brdControlBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(199, 191, 191)); //-> Gris
+            }
+            else
+            {
+                brdControlBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(219, 116, 7)); //-> Naranja
+            }
+
+            btnDeleteDocument.Visibility = Visibility.Hidden;
         }
 
         private void UserControl_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -390,6 +400,26 @@ namespace LiteDBManager.UIElements.DocumentViewer
         private void btnDeleteDocument_Click(object sender, RoutedEventArgs e)
         {
             DeleteDocument?.Invoke(this, new EventArgs());
+        }
+
+        private void UserControl_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if(!IsEditing && !IsSelected)
+            {
+                IsSelected = true;
+                brdControlBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(219, 116, 7)); //-> Naranja
+                brdControlBorder.BorderThickness = new Thickness(3);
+            }
+            else
+            {
+                IsSelected = false;
+                brdControlBorder.BorderThickness = new Thickness(1);
+
+                if (IsMouseOver)
+                    brdControlBorder.BorderBrush = Brushes.CornflowerBlue;
+                else
+                    brdControlBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(199, 191, 191)); //-> Gris
+            }
         }
     }
 }

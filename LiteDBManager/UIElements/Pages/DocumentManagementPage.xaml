@@ -17,7 +17,11 @@
                 <TextBlock x:Name="textBlock1" TextWrapping="Wrap" Text=" - " FontSize="16" FontWeight="Bold"/>
                 <TextBlock x:Name="tbkFilename" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Archivo" VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
             </StackPanel>
-            <Button x:Name="btnAddDocument" Content="Añadir documento" HorizontalAlignment="Right" Margin="0,10,10,10" VerticalAlignment="Center" Width="119" Click="btnAddDocument_Click"/>
+            <StackPanel Margin="0,10,10,10" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="btnAddDocument" Content="Añadir documento" HorizontalAlignment="Left" VerticalAlignment="Center" Width="119" Click="btnAddDocument_Click"/>
+                <Button x:Name="btnImport" Content="Importar" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Margin="15,0,0,0" Click="btnImport_Click"/>
+                <Button x:Name="btnExport" Content="Exportar" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Margin="15,0,0,0" Click="btnExport_Click"/>
+            </StackPanel>
         </Grid>
         <ScrollViewer>
             <local:DocumentViewerContainer x:Name="documentsContainer" Margin="0" Padding="0,5,0,0"/>

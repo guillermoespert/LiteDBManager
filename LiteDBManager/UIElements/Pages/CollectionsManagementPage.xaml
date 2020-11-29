@@ -17,7 +17,7 @@
             </StackPanel>
             <StackPanel Margin="0,10,11,10" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button x:Name="btnAddCollection" Content="Añadir colección" HorizontalAlignment="Right" VerticalAlignment="Center" Width="119" Click="btnAddCollection_Click" Margin="0,0,15,0"/>
-                <Button x:Name="btnImport" Content="Importar" HorizontalAlignment="Right" VerticalAlignment="Center" Width="75" Margin="0,0,15,0"/>
+                <Button x:Name="btnImport" Content="Importar" HorizontalAlignment="Right" VerticalAlignment="Center" Width="75" Margin="0,0,15,0" Click="btnImport_Click"/>
                 <Button x:Name="btnExport" Content="Exportar" HorizontalAlignment="Right" VerticalAlignment="Center" Width="75" Margin="0" Click="btnExport_Click"/>
             </StackPanel>
         </Grid>

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LiteDBManager.UIElements.DocumentViewer"
              mc:Ignorable="d" 
-             d:DesignHeight="80" d:DesignWidth="800" MouseDoubleClick="UserControl_MouseDoubleClick">
+             d:DesignHeight="80" d:DesignWidth="800" MouseDoubleClick="UserControl_MouseDoubleClick" MouseUp="UserControl_MouseUp">
     <Border x:Name="brdControlBorder" BorderThickness="1" CornerRadius="2" Padding="0" Margin="0,0,0,5" BorderBrush="#FFC7BFBF" MouseMove="Border_MouseMove" MouseLeave="brdControlBorder_MouseLeave">
         <Grid Margin="0">
             <StackPanel x:Name="stpLinesContainer" Orientation="Vertical" Margin="0"/>
