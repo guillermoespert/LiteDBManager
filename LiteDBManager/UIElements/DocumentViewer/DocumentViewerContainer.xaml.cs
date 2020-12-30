@@ -37,7 +37,7 @@ namespace LiteDBManager.UIElements
         {
             foreach(var value in values)
             {
-                DocumentViewerControl dv = new DocumentViewerControl(value);
+                DocumentViewerControl dv = new DocumentViewerControl(value as BsonDocument);
                 dv.DeleteDocument += DocumentViewer_DeleteDocument;
                 dv.Margin = new Thickness(5, 10, 5, 0);
                 stpDocumentsContainer.Children.Add(dv);

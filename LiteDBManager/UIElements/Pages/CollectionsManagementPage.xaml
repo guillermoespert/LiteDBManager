@@ -15,33 +15,34 @@
                 <TextBlock x:Name="textBlock" TextWrapping="Wrap" Text="Colecciones - " FontSize="16" FontWeight="Bold"/>
                 <TextBlock x:Name="tbkFilename" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Archivo" VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
             </StackPanel>
-            <StackPanel Margin="0,10,11,10" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="btnAddCollection" Content="Añadir colección" HorizontalAlignment="Right" VerticalAlignment="Center" Width="119" Click="btnAddCollection_Click" Margin="0,0,15,0"/>
-                <Button x:Name="btnImport" Content="Importar" HorizontalAlignment="Right" VerticalAlignment="Center" Width="75" Margin="0,0,15,0" Click="btnImport_Click"/>
-                <Button x:Name="btnExport" Content="Exportar" HorizontalAlignment="Right" VerticalAlignment="Center" Width="75" Margin="0" Click="btnExport_Click"/>
-            </StackPanel>
         </Grid>
         <DataGrid x:Name="dgCollections" Margin="10,0,10,10" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" MouseDoubleClick="dgCollections_MouseDoubleClick">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Mode=OneWay}" Header="Nombre de la colección" Width="90*"/>
-                <DataGridTemplateColumn CanUserReorder="False" Width="10*">
+                <DataGridTextColumn Binding="{Binding Mode=OneWay}" Header="Nombre de la colección" Width="100*"/>
+                <DataGridTemplateColumn CanUserReorder="False" Width="7*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button x:Name="btnRenombrar" Content="Renombrar" Click="btnRenombrar_Click"  />
+                            <Button x:Name="btnRenombrar" Click="btnRenombrar_Click" ToolTip="Renombrar la colección" BorderBrush="{x:Null}" Foreground="{x:Null}" Background="White" Width="25" Height="25" >
+                                <Image x:Name="image" Height="24" Width="24" Source="/LiteDBManager;component/Resources/rename-collection.png" d:IsLocked="True"/>
+                            </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn CanUserReorder="False" Width="10*">
+                <DataGridTemplateColumn CanUserReorder="False" Width="7*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button x:Name="btnVaciar" Content="Vaciar" Click="btnVaciar_Click"  />
+                            <Button x:Name="btnVaciar" Click="btnVaciar_Click" ToolTip="Vaciar la colección" BorderBrush="{x:Null}" Foreground="{x:Null}" Background="White" Width="25" Height="25" >
+                                <Image x:Name="image" Height="24" Width="24" Source="/LiteDBManager;component/Resources/vaciar-datos.png" d:IsLocked="True"/>
+                            </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn CanUserReorder="False" Width="10*">
+                <DataGridTemplateColumn CanUserReorder="False" Width="7*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button x:Name="btnEliminar" Content="Eliminar" Click="btnEliminar_Click"  />
+                            <Button x:Name="btnEliminar" Click="btnEliminar_Click" ToolTip="Eliminar la colección" BorderBrush="{x:Null}" Foreground="{x:Null}" Background="White" Width="25" Height="25" >
+                                <Image x:Name="image" Height="24" Width="24" Source="/LiteDBManager;component/Resources/icons8-remove-96.png" d:IsLocked="True"/>
+                            </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

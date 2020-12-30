@@ -1,32 +1,33 @@
 ﻿using LiteDBManager.Services;
-using ICSharpCode.AvalonEdit.Editing;
 using LiteDB;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System;
+using System.Windows.Media.Imaging;
+using System.IO;
+using System.Text;
 
 namespace LiteDBManager.UIElements.DocumentViewer
 {
     /// <summary>
     /// Lógica de interacción para DocumentViewer.xaml
     /// </summary>
-    public partial class DocumentViewerControl : UserControl
+    public partial class DocumentViewerControl : UserControl, DocumentEditorComponent
     {
         /// <summary>
-        /// Contiene una referencia al documento BSON que este control
-        /// renderiza.
+        /// Contiene una referencia al documento BSON original dado a 
+        /// este control. Las modificaciones aportadas al documento se
+        /// añaden a este documento.
         /// </summary>
-        public BsonValue Document { get; set; }
+        public BsonValue Document { get; private set; }
 
         /// <summary>
         /// Mantiene un contador del número de niveles de profundidad
         /// en la creación de documentos hijos.
         /// </summary>
         public int DocumentNestingLevel { get; set; } = 1;
-
-        public List<FoldingGroup> FoldingGroups { get; private set; } = new List<FoldingGroup>();
 
         public int LineCounter { get; private set; } = 0;
 
@@ -36,331 +37,287 @@ namespace LiteDBManager.UIElements.DocumentViewer
 
         public bool IsSelected { get; set; }
 
-        public DocumentViewerControl(BsonValue document)
+        public bool IsGroupCollapsed { get; set; }
+
+        public bool IsEditingTextual { get; private set; }
+
+        public DocumentViewerControl(BsonDocument document) : this(document as BsonValue)
+        { }
+
+        public DocumentViewerControl(BsonArray document) : this(document as BsonValue)
+        { }
+
+        private DocumentViewerControl(BsonValue document)
         {
             Document = document;
 
             InitializeComponent();
 
-            LoadDocument();
+            grdTextCodeEditor.Visibility = Visibility.Hidden;
+            stpLinesContainer.Visibility = Visibility.Visible;
+
+            //Cargar el documento original
+            LoadDocument(document);
         }
 
         /// <summary>
         /// Carga el documento pasado durante la creación del control.
         /// </summary>
-        public void LoadDocument()
+        public void LoadDocument(BsonValue document)
         {
-            //Insertar la línea de comienzo
-            stpLinesContainer.Children.Add(new DocumentViewerLine(LineType.Opening, ++LineCounter));
-
-            var document = Document as BsonDocument;
-            
-            foreach(var line in document)
+            if(document is BsonDocument)
             {
-                if(line.Value is BsonDocument)
-                {
-                    DocumentNestingLevel++;
-                    LoadBsonDocument(line);
-                }
-                else
-                {
-                    DocumentNestingLevel = 1;
-                    //Insertar las líneas de datos
-                    var docline = new DocumentViewerLine(line, ++LineCounter);
-                    docline.LineStartedEdition += Children_LineStartedEdition;
-                    docline.AddNewLine += Children_AddNewLine;
-                    stpLinesContainer.Children.Add(docline);
-                }
-            }
-
-            //Insertar la línea de cierre
-            DocumentViewerLine dvl = new DocumentViewerLine(LineType.Closing, ++LineCounter);
-            stpLinesContainer.Children.Add(dvl);
-        }
-
-        /// <summary>
-        /// Carga todos los documentos anidados que pueda tener el documento
-        /// principal o envolvente.
-        /// </summary>
-        /// <param name="document"></param>
-        public void LoadBsonDocument(KeyValuePair<string, BsonValue> document)
-        {
-            var bsonDoc = document.Value as BsonDocument;
-            var tabLength = DocumentViewerLine.DEFAULT_TAB_LENGTH;
-
-            if (bsonDoc != null)
-            {
-                int bracketsTab = (DocumentNestingLevel - 1 > 0) ? (DocumentNestingLevel - 1) * tabLength : tabLength;
-
-                //Creación de un nuevo grupo de cierre
-                FoldingGroup folding = new FoldingGroup();
-                int newGroupIndex = FoldingGroups.Count;
-                FoldingGroups.Add(folding); // -> Insertar para reservar el índice
-                folding.LineStart = ++LineCounter;
+                var doc = document as BsonDocument;
 
                 //Insertar la línea de comienzo
-                var startLine = new DocumentViewerLine(document, LineCounter, LineType.NestedObjectOpening, bracketsTab);
-                startLine.FoldingGroup = newGroupIndex;
-                startLine.Visibility = (DocumentNestingLevel > 2) ? Visibility.Collapsed : Visibility.Visible;
-                startLine.IsGroupCollapsed = true;
-                startLine.IsNestedDocumentChildren = true;
-                startLine.FoldActionRequest += FoldableStartLine_FoldActionRequest;
-                startLine.LineStartedEdition += Children_LineStartedEdition;
-                startLine.InnerDocumentDelete += StartLine_InnerDocumentDelete;
-                startLine.AddNewLine += Children_AddNewLine;
-                stpLinesContainer.Children.Add(startLine);
-                
-                foreach (var line in bsonDoc)
+                var start = new DocumentViewerLine(LineType.Opening, ++LineCounter);
+                stpLinesContainer.Children.Add(start);
+
+                foreach (var line in doc)
                 {
                     if (line.Value is BsonDocument)
                     {
-                        DocumentNestingLevel++;
-                        LoadBsonDocument(line);
+                        var childDoc = new DocumentViewerLineGroup(line, DocumentNestingLevel + 1, ++LineCounter);
+                        LineCounter = childDoc.LoadDocument();
+                        childDoc.LinesAdded += ChildDoc_LinesAdded;
+                        stpLinesContainer.Children.Add(childDoc);
                     }
                     else
                     {
                         //Insertar las líneas de datos
-                        var docline = new DocumentViewerLine(line, ++LineCounter, DocumentNestingLevel * tabLength);
-                        docline.Visibility = Visibility.Collapsed;
-                        docline.LineStartedEdition += Children_LineStartedEdition;
+                        var docline = new DocumentViewerLine(line, ++LineCounter);
                         docline.AddNewLine += Children_AddNewLine;
-                        docline.IsNestedDocumentChildren = true;
+                        docline.UpdatedLineType += Children_UpdatedLineType;
                         stpLinesContainer.Children.Add(docline);
                     }
-
                 }
 
-                //Insertar la línea de cierre 
-                var endLine = new DocumentViewerLine(LineType.NestedObjectClosing, ++LineCounter, bracketsTab);
-                endLine.Visibility = Visibility.Collapsed;
-                stpLinesContainer.Children.Add(endLine);
+                //Insertar la línea de cierre
+                DocumentViewerLine dvl = new DocumentViewerLine(LineType.Closing, ++LineCounter);
+                stpLinesContainer.Children.Add(dvl);
+            }
+        }
 
-                folding.LinesCount = LineCounter - folding.LineStart;
-                FoldingGroups[newGroupIndex] = folding; // -> Actualizar la estructura con los cambios
+        private void ChildDoc_LinesAdded(object sender, EventArgs e)
+        {
+            UpdateLineNumbers();
+        }
+
+        public void UpdateLineNumbers()
+        {
+            LineCounter = 1;
+
+            foreach (var child in stpLinesContainer.Children)
+            {
+                if (child is DocumentViewerLine)
+                {
+                    var line = child as DocumentViewerLine;
+                    line.LineNumber = LineCounter;
+                    LineCounter++;
+                }
+                else if (child is DocumentViewerLineGroup)
+                {
+                    var group = child as DocumentViewerLineGroup;
+                    LineCounter = group.UpdateLineNumbers(LineCounter);
+                }
             }
         }
 
         private void StartLine_InnerDocumentDelete(object sender, LineEventArgs e)
         {
-            var line = sender as DocumentViewerLine;
-            var group = FoldingGroups[line.FoldingGroup];
-            var groupElements = stpLinesContainer.Children;
-            int i = group.LineStart - 1;
-            int end = i + group.LinesCount;
+            //var line = sender as DocumentViewerLine;
+            //var group = FoldingGroups[line.FoldingGroup];
+            //var groupElements = stpLinesContainer.Children;
+            //int i = group.LineStart - 1;
+            //int end = i + group.LinesCount;
 
-            for (; i <= end; i++)
+            //for (; i <= end; i++)
+            //{
+            //    if (i < groupElements.Count)
+            //    {
+            //        var element = groupElements[i] as DocumentViewerLine;
+
+            //        element.SetAsDeleted();
+            //    }
+            //}
+        }
+
+        public void ActivateEdition()
+        {
+            if (!IsEditingTextual)
             {
-                if (i < groupElements.Count)
+                //Activar el modo edición
+                foreach (var child in stpLinesContainer.Children)
                 {
-                    var element = groupElements[i] as DocumentViewerLine;
-
-                    element.SetAsDeleted();
+                    if (child is DocumentEditorComponent)
+                    {
+                        var line = child as DocumentEditorComponent;
+                        line.ActivateEdition();
+                    }
                 }
+
+                txtCodeEditor.IsEnabled = false;
             }
-        }
-
-        private void Children_LineStartedEdition(object sender, System.EventArgs e)
-        {
-            ActivateEditionMode();
-        }
-
-        public void ActivateEditionMode()
-        {
-            //Activar el modo edición
-            foreach (var child in stpLinesContainer.Children)
+            else
             {
-                var line = child as DocumentViewerLine;
-                line.IsInEditionMode = true;
+                txtCodeEditor.IsEnabled = true;
             }
 
             IsEditing = true;
             stpLinesContainer.Margin = new Thickness(5, 2, 0, 32);
+            txtCodeEditor.Margin = new Thickness(0, 2, 0, 32);
             paneEdition.Visibility = Visibility.Visible;
-            btnDeleteDocument.Visibility = Visibility.Hidden;
-        }
+            grdButtons.Visibility = Visibility.Hidden;        }
 
-        private void FoldableStartLine_FoldActionRequest(object sender, FoldEventArgs e)
+        public void CancelEdition()
         {
-            var line = sender as DocumentViewerLine;
-            
-            if(line != null && FoldingGroups.Count > e.FoldingGroup)
+            // Desactivar el modo edición
+            foreach (var child in stpLinesContainer.Children)
             {
-                var group = FoldingGroups[e.FoldingGroup];
-                var groupElements = stpLinesContainer.Children;
-                int i = group.LineStart;
-                int end = (i - 1) + group.LinesCount;
-                Visibility newStatus = line.IsGroupCollapsed ? Visibility.Visible : Visibility.Collapsed;
-
-                for (; i <= end; i++)
+                if(child is DocumentEditorComponent)
                 {
-                    if(i < groupElements.Count)
-                    {
-                        var element = groupElements[i] as DocumentViewerLine;
-
-                        element.Visibility = newStatus;
-                        element.IsGroupCollapsed = !line.IsGroupCollapsed;
-                    }
+                    var line = child as DocumentEditorComponent;
+                    line.CancelEdition();
                 }
-
-                line.IsGroupCollapsed = !line.IsGroupCollapsed;
             }
+
+            IsEditing = false;
+            stpLinesContainer.Margin = new Thickness(5, 2, 0, 0);
+            txtCodeEditor.Margin = new Thickness(0, 2, 0, 0);
+            paneEdition.Visibility = Visibility.Collapsed;
+
+            txtCodeEditor.IsEnabled = false;
+
+            if(IsEditingTextual)
+                txtCodeEditor.Text = SerializeJson(Document);
+            else
+                ReloadDocument(Document as BsonDocument);
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-            //Desactivar el modo edición
-            foreach (var child in stpLinesContainer.Children)
-            {
-                var line = child as DocumentViewerLine;
-                line.IsInEditionMode = false;
-                line.CancelEdition();
-            }
-
-            IsEditing = false;
-            stpLinesContainer.Margin = new Thickness(0, 0, 0, 0);
-            paneEdition.Visibility = Visibility.Collapsed;
+            CancelEdition();
         }
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            Dictionary<string, BsonValue> docLines = new Dictionary<string, BsonValue>();
+            BsonDocument doc;
 
-            //Desactivar el modo edición
-            foreach (var child in stpLinesContainer.Children)
+            if (IsEditingTextual)
             {
-                var line = child as DocumentViewerLine;
-
-                line.CommitEdition();
-
-                if (line.LineType == LineType.DataDisplay && !line.IsNestedDocumentChildren)
-                {
-                    docLines.Add(line.LineKey, line.LineValue);
-                }
-                else if(line.LineType == LineType.NestedObjectOpening)
-                {
-                    var document = ParseChildrenDocument(line.FoldingGroup);
-                    docLines.Add(line.LineKey, document);
-                }
-
-                line.IsInEditionMode = false;
-                line.CancelEdition();
+                doc = JsonSerializer.Deserialize(txtCodeEditor.Text) as BsonDocument;
             }
-
-            BsonDocument doc = new BsonDocument(docLines);
+            else
+            {
+                doc = ParseDocument();
+            }
 
             var collection = DbConnections.CurrentConnection.LiteDatabase.GetCollection(DbConnections.CurrentConnection.EditingCollection);
             collection.Update(doc);
             DbConnections.CurrentConnection.LiteDatabase.Commit();
 
             IsEditing = false;
+            txtCodeEditor.IsEnabled = false;
             stpLinesContainer.Margin = new Thickness(0, 0, 0, 0);
             paneEdition.Visibility = Visibility.Collapsed;
 
-            ReloadDocument();
+            Document = doc;
+            txtCodeEditor.Text = SerializeJson(doc);
+            ReloadDocument(Document as BsonDocument);
         }
 
-        private BsonDocument ParseChildrenDocument(int foldingGroup)
+        /// <summary>
+        /// Parsea el contenedor de edición interactiva y convierte el contenido
+        /// a un documento BSON.
+        /// </summary>
+        /// <returns></returns>
+        private BsonDocument ParseDocument()
         {
             Dictionary<string, BsonValue> docLines = new Dictionary<string, BsonValue>();
 
-            if (FoldingGroups.Count > foldingGroup)
+            //Desactivar el modo edición
+            foreach (var child in stpLinesContainer.Children)
             {
-                var group = FoldingGroups[foldingGroup];
-                var groupElements = stpLinesContainer.Children;
-                int i = group.LineStart;
-                int end = (i - 1) + group.LinesCount;
-
-                //Desactivar el modo edición
-                for (; i <= end; i++)
+                if (child is DocumentViewerLine)
                 {
-                    var line = groupElements[i] as DocumentViewerLine;
+                    var line = child as DocumentViewerLine;
+
                     line.CommitEdition();
 
                     if (line.LineType == LineType.DataDisplay)
                     {
                         docLines.Add(line.LineKey, line.LineValue);
                     }
-                    else if(line.LineType == LineType.NestedObjectOpening)
-                    {
-                        var document = ParseChildrenDocument(line.FoldingGroup);
-                        docLines.Add(line.LineKey, document);
-                    }
+
+                    line.CancelEdition();
+                }
+                else if (child is DocumentViewerLineGroup)
+                {
+                    var group = child as DocumentViewerLineGroup;
+                    var childDoc = group.ParseDocument();
+                    docLines.Add(childDoc.Key, childDoc.Value);
                 }
             }
 
-            BsonDocument doc = new BsonDocument(docLines);
-
-            return doc;
+             return new BsonDocument(docLines);
         }
 
         private void Children_AddNewLine(object sender, LineEventArgs e)
         {
-            if(stpLinesContainer.Children.Count > e.LineNumber)
+            var line = sender as DocumentViewerLine;
+
+            if (line != null)
             {
-                var parent = sender as DocumentViewerLine;
-                BsonValue value = new BsonValue("");
-                DocumentViewerLine newLine = new DocumentViewerLine("", value, e.LineNumber + 1, parent.LineTabLength);
-                newLine.IsInEditionMode = true;
+                var index = stpLinesContainer.Children.IndexOf(line);
 
-                if (parent.LineType == LineType.NestedObjectOpening || parent.IsNestedDocumentChildren)
-                    newLine.IsNestedDocumentChildren = true;
-
-                stpLinesContainer.Children.Insert(e.LineNumber, newLine);
-                var lineNumber = e.LineNumber + 1;
-
-                for(int i = e.LineNumber; i < stpLinesContainer.Children.Count; i++)
+                if (index > -1)
                 {
-                    var line = stpLinesContainer.Children[i] as DocumentViewerLine;
-                    line.LineNumber = lineNumber++;
-                }
+                    BsonValue value = new BsonValue("");
+                    DocumentViewerLine newLine = new DocumentViewerLine("newVariable", value, e.LineNumber + 1, DocumentNestingLevel * DocumentViewerLine.DEFAULT_TAB_LENGTH);
+                    newLine.UpdatedLineType += Children_UpdatedLineType;
+                    newLine.AddNewLine += Children_AddNewLine;
+                    ((DocumentEditorComponent)newLine).ActivateEdition();
 
-                //Recalcular los grupos de cierre
-                for(int i = 0; i < FoldingGroups.Count; i++)
-                {
-                    if(e.LineNumber + 1 <= FoldingGroups[i].LineStart)
-                    {
-                        var group = FoldingGroups[i];
-                        group.LineStart++;
-                        FoldingGroups[i] = group;
-                    }
-                    else if (e.LineNumber + 1 > FoldingGroups[i].LineStart && FoldingGroups[i].LineStart + FoldingGroups[i].LinesCount >= e.LineNumber)
-                    {
-                        var group = FoldingGroups[i];
-                        group.LinesCount++;
-                        FoldingGroups[i] = group;
-                    }
-                }
+                    stpLinesContainer.Children.Insert(index + 1, newLine);
 
-                LineCounter++;
+                    UpdateLineNumbers();
+                }
             }
         }
 
-        private void ReloadDocument()
+        private void Children_UpdatedLineType(object sender, LineEventArgs e)
         {
-            if (Document is BsonDocument)
+            var index = stpLinesContainer.Children.IndexOf(sender as UIElement);
+
+            if (index > -1)
             {
-                var doc = Document as BsonDocument;
+                var newDoc = new BsonDocument();
+                var value = new BsonValue("");
+                newDoc.Add("newValue", value);
+                var newLine = new KeyValuePair<string, BsonValue>("newDocument", newDoc);
+                var childDoc = new DocumentViewerLineGroup(newLine, DocumentNestingLevel + 1, ++LineCounter);
+                LineCounter = childDoc.LoadDocument();
+                childDoc.LinesAdded += ChildDoc_LinesAdded;
+                ((DocumentEditorComponent)childDoc).ActivateEdition();
+                stpLinesContainer.Children.Remove(sender as UIElement);
+                stpLinesContainer.Children.Insert(index, childDoc);
 
-                //Buscar el id del documento
-                foreach (var line in doc)
-                {
-                    if(line.Key.Equals("_id"))
-                    {
-                        var newDoc = DbConnections.CurrentConnection.LiteDatabase.GetCollection(DbConnections.CurrentConnection.EditingCollection).FindById(line.Value);
+                UpdateLineNumbers();
+            }
+        }
 
-                        if(newDoc != null)
-                        {
-                            Document = newDoc;
-                            stpLinesContainer.Children.Clear();
-                            FoldingGroups.Clear();
-                            LineCounter = 0;
-                            DocumentNestingLevel = 1;
-                            LoadDocument();
-                        }
-
-                        break;
-                    }
-                }
+        /// <summary>
+        /// Recarga el documento dado
+        /// </summary>
+        /// <param name="document"></param>
+        private void ReloadDocument(BsonDocument document)
+        {
+            if (document != null)
+            {
+                stpLinesContainer.Children.Clear();
+                LineCounter = 0;
+                DocumentNestingLevel = 1;
+                LoadDocument(document);
             }
         }
 
@@ -369,7 +326,7 @@ namespace LiteDBManager.UIElements.DocumentViewer
             if(!IsEditing && !btnDeleteDocument.IsMouseOver)
             {
                 brdControlBorder.BorderBrush = Brushes.CornflowerBlue;
-                btnDeleteDocument.Visibility = Visibility.Visible;
+                grdButtons.Visibility = Visibility.Visible;
             }
         }
 
@@ -384,12 +341,12 @@ namespace LiteDBManager.UIElements.DocumentViewer
                 brdControlBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(219, 116, 7)); //-> Naranja
             }
 
-            btnDeleteDocument.Visibility = Visibility.Hidden;
+            grdButtons.Visibility = Visibility.Hidden;
         }
 
         private void UserControl_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            ActivateEditionMode();
+            ActivateEdition();
         }
 
         private void btnDeleteDocument_PreviewMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
@@ -419,6 +376,45 @@ namespace LiteDBManager.UIElements.DocumentViewer
                     brdControlBorder.BorderBrush = Brushes.CornflowerBlue;
                 else
                     brdControlBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(199, 191, 191)); //-> Gris
+            }
+        }
+
+        private void btnToggleEditor_Click(object sender, RoutedEventArgs e)
+        {
+            if(IsEditingTextual)
+            {
+                imgToggleButton.Source = new BitmapImage(new Uri(@"/LiteDBManager;component/Resources/icons8-json-80.png", UriKind.Relative));
+                IsEditingTextual = false;
+                Document = JsonSerializer.Deserialize(txtCodeEditor.Text);
+                ReloadDocument(Document as BsonDocument);
+                grdTextCodeEditor.Visibility = Visibility.Collapsed;
+                stpLinesContainer.Visibility = Visibility.Visible;
+                txtCodeEditor.Text = "";
+            }
+            else
+            {
+                imgToggleButton.Source = new BitmapImage(new Uri(@"/LiteDBManager;component/Resources/icons8-tree-structure-96.png", UriKind.Relative));
+                IsEditingTextual = true;
+                
+                txtCodeEditor.Text = SerializeJson(Document);
+
+                grdTextCodeEditor.Visibility = Visibility.Visible;
+                stpLinesContainer.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private string SerializeJson(BsonValue value)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            using (var writer = new StringWriter(sb))
+            {
+                var w = new JsonWriter(writer);
+                w.Pretty = true;
+
+                w.Serialize(value ?? BsonValue.Null);
+
+                return sb.ToString();
             }
         }
     }

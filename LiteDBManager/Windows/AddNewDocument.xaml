@@ -7,7 +7,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:Structures="clr-namespace:LiteDBManager.Structures"
         mc:Ignorable="d"
-        Title="Añadir nuevo documento" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" d:DesignWidth="505.499" Width="505" Height="181.072" HorizontalAlignment="Left" VerticalAlignment="Top">
+        Title="Añadir nuevo documento" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" d:DesignWidth="505.499" Width="505" Height="181.072" HorizontalAlignment="Left" VerticalAlignment="Top" Icon="/LiteDBManager;component/Resources/database_rDV_icon.ico">
     <Window.Resources>
         <ObjectDataProvider x:Key="idTypes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>

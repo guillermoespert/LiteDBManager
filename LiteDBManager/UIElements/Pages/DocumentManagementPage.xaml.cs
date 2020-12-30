@@ -1,6 +1,7 @@
 ﻿using LiteDB;
 using LiteDBManager.Services;
 using LiteDBManager.Structures;
+using LiteDBManager.UIElements.Pages;
 using LiteDBManager.Windows;
 using Microsoft.Win32;
 using System.IO;
@@ -12,7 +13,7 @@ namespace LiteDBManager.UIElements
     /// <summary>
     /// Lógica de interacción para DbManagementPage.xaml
     /// </summary>
-    public partial class DocumentManagementPage : Page
+    public partial class DocumentManagementPage : Page, DataManipulation
     {
         //private FoldingManager foldingManager;
         //private InlineDisplayFoldingStrategy foldingStrategy;
@@ -26,11 +27,6 @@ namespace LiteDBManager.UIElements
             tbkDocument.Text = dbConnection.EditingCollection;
 
             LoadDocuments();
-        }
-
-        private void textEditor_TextChanged(object sender, System.EventArgs e)
-        {
-            //foldingStrategy.UpdateFoldings(foldingManager, textEditor.Document);
         }
 
         /// <summary>
@@ -50,7 +46,7 @@ namespace LiteDBManager.UIElements
         /// </summary>
         public void LoadDocuments() => LoadDocuments(DbConnections.CurrentConnection.EditingCollection);
 
-        private void btnAddDocument_Click(object sender, RoutedEventArgs e)
+        public void AddItem()
         {
             AddNewDocument and = new AddNewDocument();
             and.Owner = MainService.MainWindow;
@@ -64,9 +60,9 @@ namespace LiteDBManager.UIElements
             }
         }
 
-        private void btnExport_Click(object sender, RoutedEventArgs e)
+        public void ExportSelected()
         {
-            if(documentsContainer.CountSelectedDocuments > 0)
+            if (documentsContainer.CountSelectedDocuments > 0)
             {
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.CheckPathExists = true;
@@ -91,7 +87,7 @@ namespace LiteDBManager.UIElements
             }
         }
 
-        private void btnImport_Click(object sender, RoutedEventArgs e)
+        public void ImportSelected()
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.CheckPathExists = true;

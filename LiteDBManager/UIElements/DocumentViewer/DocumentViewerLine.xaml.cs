@@ -15,7 +15,7 @@ namespace LiteDBManager.UIElements.DocumentViewer
     /// <summary>
     /// Lógica de interacción para DocumentViewerLiner.xaml
     /// </summary>
-    public partial class DocumentViewerLine : UserControl
+    public partial class DocumentViewerLine : UserControl, DocumentEditorComponent
     {
         #region Declaración de propiedades y eventos
 
@@ -50,7 +50,7 @@ namespace LiteDBManager.UIElements.DocumentViewer
         /// Bandera que indica si la linea actual es de apertura o cierre
         /// de documento.
         /// </summary>
-        public bool IsEndingOrStartingLine { get; private set; }
+        public bool IsEndingOrStartingLine { get; set; }
 
         /// <summary>
         /// Valor de indentación de la línea
@@ -65,7 +65,7 @@ namespace LiteDBManager.UIElements.DocumentViewer
         /// <summary>
         /// Bandera que indica si el valor puede ser editado
         /// </summary>
-        public bool IsValueEditable { get; private set; } = true;
+        public bool IsValueEditable { get; set; } = true;
 
         /// <summary>
         /// Número de la línea con respecto al documento.
@@ -83,11 +83,6 @@ namespace LiteDBManager.UIElements.DocumentViewer
         }
 
         /// <summary>
-        /// Número del grupo de cierre al que pertenece esta línea.
-        /// </summary>
-        public int FoldingGroup { get; set; } = 0;
-
-        /// <summary>
         /// Activa o desactiva el modo de edición.
         /// Este valor no sobre escribe los valores de IsVariableEditable
         /// y IsValueEditable que siguen teniéndose en cuenta para activar
@@ -96,11 +91,6 @@ namespace LiteDBManager.UIElements.DocumentViewer
         public bool IsInEditionMode
         {
             get { return editionMode; }
-            set
-            {
-                editionMode = value;
-                EnableEditionMode();
-            }
         }
 
         /// <summary>
@@ -127,13 +117,6 @@ namespace LiteDBManager.UIElements.DocumentViewer
         public event EventHandler<FoldEventArgs> FoldActionRequest;
 
         /// <summary>
-        /// Evento que se produce cuando un campo ha iniciado el modo de edición.
-        /// Este cambio se produce cuando se hace doble clic sobre un campo que 
-        /// tiene la edición permitida.
-        /// </summary>
-        public event EventHandler<EventArgs> LineStartedEdition;
-
-        /// <summary>
         /// Evento que se produce cuando el usuario presiona el botón
         /// añadir línea sobre el documento en modo edición.
         /// </summary>
@@ -144,6 +127,8 @@ namespace LiteDBManager.UIElements.DocumentViewer
         /// anidado. 
         /// </summary>
         public event EventHandler<LineEventArgs> InnerDocumentDelete;
+
+        public event EventHandler<LineEventArgs> UpdatedLineType;
 
         /// <summary>
         /// Define el tipo de línea usado
@@ -236,7 +221,6 @@ namespace LiteDBManager.UIElements.DocumentViewer
             tbxVariable.IsEnabled = false;
             IsVariableEditable = false;
             IsValueEditable = false;
-            IsInEditionMode = false;
         }
 
         /// <summary>
@@ -274,17 +258,16 @@ namespace LiteDBManager.UIElements.DocumentViewer
                 tbxValue.Text = "{";
                 tbkDoubleDot.Visibility = Visibility.Visible;
                 tbxValue.Visibility = Visibility.Visible;
-                ShowValueTypeSelection();
                 IsVariableEditable = true;
                 IsValueEditable = false;
                 btnFolding.Visibility = Visibility.Visible;
+                
             }
             else if (lineType == LineType.NestedObjectClosing)
             {
                 tbxVariable.Text = "}";
                 tbkDoubleDot.Visibility = Visibility.Hidden;
                 tbxValue.Visibility = Visibility.Hidden;
-                HideValueTypeSelection();
                 IsVariableEditable = false;
                 IsValueEditable = false;
             }
@@ -292,7 +275,7 @@ namespace LiteDBManager.UIElements.DocumentViewer
             SetLineValueType();
             IsEndingOrStartingLine = true;
             tbxVariable.Margin = new Thickness(tabLength, 0, 0, 0);
-            IsInEditionMode = false;
+            HideValueTypeSelection();
         }
 
         public DocumentViewerLine(string key, BsonValue value, int lineNumber, int tabLength)
@@ -317,6 +300,7 @@ namespace LiteDBManager.UIElements.DocumentViewer
 
             SetLineValueType();
             ShowValueTypeSelection();
+            HideValueTypeSelection();
 
             //Desactivar la edición si se trata del identificador de documento
             if (key.Equals("_id"))
@@ -333,8 +317,6 @@ namespace LiteDBManager.UIElements.DocumentViewer
                 IsVariableEditable = true;
                 IsValueEditable = true;
             }
-
-            IsInEditionMode = false;
         }
 
         #endregion
@@ -385,18 +367,13 @@ namespace LiteDBManager.UIElements.DocumentViewer
                 {
                     if (!tbxVariable.IsFocused)
                     {
-                        LineStartedEdition?.Invoke(this, new EventArgs());
                         tbxVariable.Focus();
                     }
                 }
                 else
                 {
-                    if (!IsVariableEditable)
-                    {
-                        LineStartedEdition?.Invoke(this, new EventArgs());
-                    }
-                    else
-                    {
+                    if (IsVariableEditable)
+                    { 
                         e.Handled = true;
                     }
                 }
@@ -463,17 +440,12 @@ namespace LiteDBManager.UIElements.DocumentViewer
                 {
                     if (!tbxValue.IsFocused)
                     {
-                        LineStartedEdition?.Invoke(this, new EventArgs());
                         tbxValue.Focus();
                     }
                 }
                 else
                 {
-                    if (!IsVariableEditable)
-                    {
-                        LineStartedEdition?.Invoke(this, new EventArgs());
-                    }
-                    else
+                    if (IsVariableEditable)
                     {
                         e.Handled = true;
                     }
@@ -564,7 +536,13 @@ namespace LiteDBManager.UIElements.DocumentViewer
 
         private BsonValue ParseValueAsBinary()
         {
-            return new BsonValue();
+            byte b1 = byte.Parse("1");
+            byte[] value = new byte[1];
+            value[0] = b1;
+            var newValue = new BsonValue(value);
+            tbxValue.Text = newValue.ToString();
+
+            return newValue;
         }
 
         private BsonValue ParseValueAsBoolean()
@@ -638,6 +616,16 @@ namespace LiteDBManager.UIElements.DocumentViewer
 
         private BsonValue ParseValueAsGuid()
         {
+            Guid value;
+
+            if(Guid.TryParse(tbxValue.Text, out value))
+            {
+                tbxValue.Background = Brushes.Transparent;
+                return new BsonValue(value);
+            }
+            else
+                tbxValue.Background = Brushes.LightPink;
+
             return new BsonValue();
         }
 
@@ -673,12 +661,18 @@ namespace LiteDBManager.UIElements.DocumentViewer
 
         private BsonValue ParseValueAsMaxValue()
         {
-            return new BsonValue();
+            var newValue = BsonValue.MaxValue;
+            tbxValue.Text = newValue.ToString();
+
+            return newValue;
         }
 
         private BsonValue ParseValueAsMinValue()
         {
-            return new BsonValue();
+            var newValue = BsonValue.MinValue;
+            tbxValue.Text = newValue.ToString();
+
+            return newValue;
         }
 
         private BsonValue ParseValueAsNull()
@@ -696,7 +690,32 @@ namespace LiteDBManager.UIElements.DocumentViewer
 
         private BsonValue ParseValueAsObjectId()
         {
-            return new BsonValue();
+            ObjectId value;
+            BsonValue newValue;
+
+            if (string.IsNullOrWhiteSpace(tbxValue.Text))
+            {
+                value = ObjectId.NewObjectId();
+                newValue = new BsonValue(value);
+                tbxValue.Text = newValue.ToString();
+                tbxValue.Background = Brushes.Transparent;
+            }
+            else
+            {
+                try 
+                {
+                    value = new ObjectId(tbxValue.Text);
+                    newValue = new BsonValue(value);
+                    tbxValue.Background = Brushes.Transparent;
+                }
+                catch(Exception ex)
+                {
+                    tbxValue.Background = Brushes.LightPink;
+                    newValue = new BsonValue();
+                }
+            }
+
+            return newValue;
         }
 
         private BsonValue ParseValueAsString()
@@ -748,6 +767,14 @@ namespace LiteDBManager.UIElements.DocumentViewer
                 {
                     ShowQuotationMarks();
                 }
+                else if(ValueType == BsonType.Document)
+                {
+                    LineEventArgs args = new LineEventArgs();
+                    args.LineNumber = LineNumber;
+                    args.NewLineBsonType = ValueType;
+
+                    UpdatedLineType?.Invoke(this, args);
+                }
                 else
                 {
                     HideQuotationMarks();
@@ -777,14 +804,57 @@ namespace LiteDBManager.UIElements.DocumentViewer
 
         private void controlGrid_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if ((LineType == LineType.DataDisplay || LineType == LineType.NestedObjectOpening) && IsInEditionMode)
+            if (IsInEditionMode)
             {
-                if (!LineKey.Equals("_id"))
-                    btnDeleteLine.Visibility = Visibility.Visible;
-                else
-                    btnDeleteLine.Visibility = Visibility.Hidden;
+                Visibility btnAdd = Visibility.Visible;
+                Visibility btnDel = Visibility.Visible;
 
-                btnAddLine.Visibility = Visibility.Visible;
+                if(LineType != LineType.DeletedLine)
+                {
+                    if(LineType == LineType.Opening)
+                    {
+                        btnDel = Visibility.Hidden;
+                    }
+                    else if(LineType == LineType.NestedObjectClosing)
+                    {
+                        btnDel = Visibility.Hidden;
+                    }
+                    else if(LineType == LineType.Closing)
+                    {
+                        btnDel = Visibility.Hidden;
+                        btnAdd = Visibility.Hidden;
+                    }
+                }
+                else
+                {
+                    if (typeBeforeDelete == LineType.Opening)
+                    {
+                        btnDel = Visibility.Hidden;
+                        btnAdd = Visibility.Hidden;
+                    }
+                    else if (typeBeforeDelete == LineType.NestedObjectClosing)
+                    {
+                        btnDel = Visibility.Hidden;
+                    }
+                    else if (typeBeforeDelete == LineType.Closing)
+                    {
+                        btnDel = Visibility.Hidden;
+                        btnAdd = Visibility.Hidden;
+                    }
+                    else if(typeBeforeDelete == LineType.NestedObjectOpening)
+                    {
+                        btnAdd = Visibility.Hidden;
+                    }
+                    else if(IsNestedDocumentChildren)
+                    {
+                        btnDel = Visibility.Hidden;
+                        btnAdd = Visibility.Hidden;
+                    }
+                }
+
+                btnAddLine.Visibility = btnAdd;
+                btnDeleteLine.Visibility = btnDel;
+
                 stpEditButtons.Visibility = Visibility.Visible;
             }
         }
@@ -822,7 +892,6 @@ namespace LiteDBManager.UIElements.DocumentViewer
         private void btnFolding_Click(object sender, RoutedEventArgs e)
         {
             var args = new FoldEventArgs();
-            args.FoldingGroup = FoldingGroup;
 
             FoldActionRequest?.Invoke(this, args);
         }
@@ -837,7 +906,7 @@ namespace LiteDBManager.UIElements.DocumentViewer
 
         private void btnDeleteLine_Click(object sender, RoutedEventArgs e)
         {
-            if (LineType == LineType.NestedObjectOpening)
+            if (LineType == LineType.NestedObjectOpening || (LineType == LineType.DeletedLine && typeBeforeDelete == LineType.NestedObjectOpening))
             {
                 var args = new LineEventArgs();
                 args.LineNumber = LineNumber;
@@ -874,6 +943,9 @@ namespace LiteDBManager.UIElements.DocumentViewer
                 LineType = typeBeforeDelete;
                 controlGrid.Background = new SolidColorBrush(Color.FromArgb(0, 255, 255, 255));
             }
+
+            editionMode = false;
+            HideValueTypeSelection();
         }
 
         /// <summary>
@@ -893,6 +965,25 @@ namespace LiteDBManager.UIElements.DocumentViewer
         public void SetAsDeleted()
         {
             SetLineAsDeleted();
+        }
+
+        //Activa o desactiva el modo edición
+        public void ActivateEdition()
+        {
+            editionMode = true;
+
+            if (IsVariableEditable || IsValueEditable)
+            {
+                tbkLineNumber.Visibility = Visibility.Visible;
+                showObjectType.Visibility = Visibility.Visible;
+                editObjectType.Visibility = Visibility.Hidden;
+                return;
+            }
+            else
+            {
+                tbkLineNumber.Visibility = Visibility.Visible;
+                return;
+            }
         }
 
         #endregion
@@ -924,8 +1015,14 @@ namespace LiteDBManager.UIElements.DocumentViewer
             if (LineValue.Type == BsonType.Double)
                 return value.AsDouble.ToString(culture);
 
-            if (LineValue.Type == BsonType.Decimal)
+            else if (LineValue.Type == BsonType.Decimal)
                 return value.AsDecimal.ToString(culture);
+
+            else if (LineValue.Type == BsonType.Document)
+                return "";
+
+            else if (LineValue.Type == BsonType.Int64)
+                return value.AsInt64.ToString();
 
             return value.ToString();
         }
@@ -1034,38 +1131,19 @@ namespace LiteDBManager.UIElements.DocumentViewer
             tbxValue.Text = newValue.ToString();
         }
 
-        //Activa o desactiva el modo edición
-        private void EnableEditionMode()
-        {
-            if (IsVariableEditable || IsValueEditable)
-            {
-                if (editionMode)
-                {
-                    tbkLineNumber.Visibility = Visibility.Visible;
-                    showObjectType.Visibility = Visibility.Visible;
-                    editObjectType.Visibility = Visibility.Hidden;
-                    return;
-                }
-            }
-            else
-            {
-                if (editionMode)
-                {
-                    tbkLineNumber.Visibility = Visibility.Visible;
-                    return;
-                }
-            }
-
-            tbkLineNumber.Visibility = Visibility.Collapsed;
-            showObjectType.Visibility = Visibility.Hidden;
-            editObjectType.Visibility = Visibility.Hidden;
-        }
-
         private void SetLineAsDeleted()
         {
-            typeBeforeDelete = LineType;
-            LineType = LineType.DeletedLine;
-            controlGrid.Background = new SolidColorBrush(Color.FromArgb(40, 255, 0, 0));
+            if (LineType != LineType.DeletedLine)
+            {
+                typeBeforeDelete = LineType;
+                LineType = LineType.DeletedLine;
+                controlGrid.Background = new SolidColorBrush(Color.FromArgb(40, 255, 0, 0));
+            }
+            else if(LineType == LineType.DeletedLine)
+            {
+                LineType = typeBeforeDelete;
+                controlGrid.Background = Brushes.White;
+            }
         }
 
         #endregion

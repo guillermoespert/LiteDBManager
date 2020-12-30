@@ -1,0 +1,33 @@
+﻿<Window x:Class="LiteDBManager.Windows.AboutUs"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LiteDBManager.Windows"
+        mc:Ignorable="d"
+        Title="Sobre nosotros" Height="351.562" Width="633.125" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Icon="/LiteDBManager;component/Resources/database_rDV_icon.ico">
+    <Grid>
+        <Image x:Name="image" HorizontalAlignment="Left" Height="70" Margin="25,25,0,0" VerticalAlignment="Top" Width="70" Source="/LiteDBManager;component/Resources/database.png"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="147,46,0,0" TextWrapping="Wrap" Text="LiteDB Manager" VerticalAlignment="Top" FontWeight="Bold" FontSize="24"/>
+        <Grid HorizontalAlignment="Left" Height="83" Margin="25,119,0,0" VerticalAlignment="Top" Width="401">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30*"/>
+                <RowDefinition Height="30*"/>
+                <RowDefinition Height="30*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="116*"/>
+                <ColumnDefinition Width="285*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" Text="Creador" VerticalAlignment="Center" Height="16" FontWeight="Bold"/>
+            <TextBlock x:Name="textBlock2" Grid.Column="1" HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="Guillermo Espert Carrasquer - gespert@yahoo.es" VerticalAlignment="Center" Height="16"/>
+            <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Fecha" VerticalAlignment="Center" Height="16" FontWeight="Bold"/>
+            <TextBlock x:Name="textBlock4" Grid.Column="1" HorizontalAlignment="Left" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="2020-2021" VerticalAlignment="Center" Height="16"/>
+            <TextBlock x:Name="textBlock5" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Licencia" VerticalAlignment="Center" Height="16" FontWeight="Bold"/>
+            <TextBlock x:Name="textBlock6" Grid.Column="1" HorizontalAlignment="Left" Margin="0" Grid.Row="2" TextWrapping="Wrap" Text="GNU GPL V3" VerticalAlignment="Center" Height="16"/>
+        </Grid>
+        <TextBlock x:Name="textBlock7" HorizontalAlignment="Left" Margin="30,213,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="Esta aplicación ha sido desarrollada como parte del Trabajo de Fin de Grado en Ingeniería Informática"/><Run Text=" d"/><Run Text="el alumno Guillermo Espert Carrasquer. "/></TextBlock>
+        <TextBlock x:Name="textBlock8" Margin="30,263,30,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="Todos los iconos usados"/><Run Text=" en la aplicación pertenecen a Icons8 y han sido usados bajo la licencia gratuita con atribución."/><Run Text=" https://icons8.com"/></TextBlock>
+
+    </Grid>
+</Window>

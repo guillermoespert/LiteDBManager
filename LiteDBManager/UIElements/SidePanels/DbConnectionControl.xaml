@@ -13,6 +13,7 @@
             <Label x:Name="label1" Content="Estado:" HorizontalAlignment="Left" Margin="5,30,0,0" VerticalAlignment="Top"/>
             <TextBlock x:Name="tbkConnectionStatus" Margin="63,35,5,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
             <Button x:Name="btnCloseConnection" Content="Desconectar" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" Click="btnCloseConnection_Click"/>
+            <Button x:Name="btnDuplicate" Content="Duplicar" HorizontalAlignment="Left" Margin="10,76,0,0" VerticalAlignment="Top" Width="75" Click="btnDuplicate_Click"/>
 
         </Grid>
     </Border>

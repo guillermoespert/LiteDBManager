@@ -3,6 +3,7 @@ using LiteDBManager.UIElements;
 using LiteDB;
 using System.Windows;
 using System.Windows.Media;
+using LiteDBManager.UIElements.Pages;
 
 namespace LiteDBManager.Services
 {
@@ -121,7 +122,7 @@ namespace LiteDBManager.Services
             else
             {
                 main.stpCollections.Children.Clear();
-                main.frmDbManager.Content = null;
+                main.frmDbManager.Content = new WelcomePage();
             }
         }
     }

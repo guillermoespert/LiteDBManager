@@ -10,13 +10,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Text.Json;
 using Microsoft.Win32;
+using LiteDBManager.UIElements.Pages;
 
 namespace LiteDBManager.UIElements
 {
     /// <summary>
     /// Lógica de interacción para DbManagementPage.xaml
     /// </summary>
-    public partial class CollectionsManagementPage : Page
+    public partial class CollectionsManagementPage : Page, DataManipulation
     {
         public CollectionsManagementPage()
         {
@@ -35,7 +36,7 @@ namespace LiteDBManager.UIElements
             dgCollections.ItemsSource = dbConnection.LiteDatabase.GetCollectionNames();
         }
 
-        private void btnAddCollection_Click(object sender, System.Windows.RoutedEventArgs e)
+        public void AddItem()
         {
             var dbConnection = DbConnections.CurrentConnection;
             AddCollection adcol = new AddCollection();
@@ -130,24 +131,7 @@ namespace LiteDBManager.UIElements
             }
         }
 
-        private void btnExport_Click(object sender, RoutedEventArgs e)
-        {
-            if(dgCollections.SelectedItems.Count > 0)
-            {
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.CheckPathExists = true;
-                sfd.Filter = "Archivos JSON (*.json)|*.json|Archivos XML (*.xml)|*.xml";
-
-                if (sfd.ShowDialog().Value)
-                {
-                    var collections = new string[dgCollections.SelectedItems.Count];
-                    dgCollections.SelectedItems.CopyTo(collections, 0);
-                    DataOperationsService.ExportData(collections, sfd.FileName);
-                }
-            }
-        }
-
-        private void btnImport_Click(object sender, RoutedEventArgs e)
+        public void ImportSelected()
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.CheckPathExists = true;
@@ -159,6 +143,23 @@ namespace LiteDBManager.UIElements
                 DataOperationsService.ImportData(ofd.FileName, DataOperations.ImportCollections);
                 LoadCollections();
                 MainService.UpdateCollections();
+            }
+        }
+
+        public void ExportSelected()
+        {
+            if (dgCollections.SelectedItems.Count > 0)
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.CheckPathExists = true;
+                sfd.Filter = "Archivos JSON (*.json)|*.json|Archivos XML (*.xml)|*.xml";
+
+                if (sfd.ShowDialog().Value)
+                {
+                    var collections = new string[dgCollections.SelectedItems.Count];
+                    dgCollections.SelectedItems.CopyTo(collections, 0);
+                    DataOperationsService.ExportData(collections, sfd.FileName);
+                }
             }
         }
     }

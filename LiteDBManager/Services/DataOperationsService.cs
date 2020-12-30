@@ -17,6 +17,38 @@ namespace LiteDBManager.Services
     /// </summary>
     public class DataOperationsService
     {
+        public CollectionsWrapperDO CollectionsWrapperDO
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public DataOperations DataOperations
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public CollectionDO CollectionDO
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public Serializer Serializer
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
         /// <summary>
         /// Importa todos los datos definidos en el archivo al que hace 
         /// referencia el parámetro <code>path</code>.

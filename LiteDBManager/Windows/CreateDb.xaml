@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LiteDBManager.Windows"
         mc:Ignorable="d"
-        Title="Crear nueva base de datos" Width="477.5" Height="215.312" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="Crear nueva base de datos" Width="477.5" Height="215.312" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Icon="/LiteDBManager;component/Resources/database_rDV_icon.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20*"/>

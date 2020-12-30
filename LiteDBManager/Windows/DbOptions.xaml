@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LiteDBManager.Windows"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Name="winDbOptions" x:Class="LiteDBManager.Windows.DbOptions"
         mc:Ignorable="d"
-        Title="Opciones de conexión" Height="498.583" Width="454.062" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="Opciones de conexión" Height="498.583" Width="454.062" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Icon="/LiteDBManager;component/Resources/database_rDV_icon.ico">
     <Grid>
         <GroupBox x:Name="groupBox" Height="90" Margin="10,82,15,0" VerticalAlignment="Top" Header="Protección de la base de datos con una contraseña">
             <Grid>

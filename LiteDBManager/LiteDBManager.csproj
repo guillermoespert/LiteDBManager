@@ -105,16 +105,24 @@
     <Compile Include="Structures\DataOperations.cs" />
     <Compile Include="Structures\DbConnection.cs" />
     <Compile Include="Structures\DbIdTypes.cs" />
+    <Compile Include="UIElements\DocumentViewer\DocumentEditorComponent.cs" />
     <Compile Include="UIElements\DocumentViewer\DocumentViewerControl.xaml.cs">
       <DependentUpon>DocumentViewerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UIElements\DocumentViewer\DocumentViewerLine.xaml.cs">
       <DependentUpon>DocumentViewerLine.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UIElements\DocumentViewer\DocumentViewerLineGroup.xaml.cs">
+      <DependentUpon>DocumentViewerLineGroup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UIElements\DocumentViewer\FoldEventArgs.cs" />
     <Compile Include="UIElements\DocumentViewer\FoldingGroup.cs" />
     <Compile Include="UIElements\DocumentViewer\LineEventArgs.cs" />
     <Compile Include="UIElements\DocumentViewer\LineType.cs" />
+    <Compile Include="UIElements\Pages\DataManipulation.cs" />
+    <Compile Include="UIElements\Pages\WelcomePage.xaml.cs">
+      <DependentUpon>WelcomePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UIElements\SidePanels\DbCollectionControl.xaml.cs">
       <DependentUpon>DbCollectionControl.xaml</DependentUpon>
     </Compile>
@@ -150,6 +158,9 @@
     <Compile Include="Windows\AddNewDocument.xaml.cs">
       <DependentUpon>AddNewDocument.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\AboutUs.xaml.cs">
+      <DependentUpon>AboutUs.xaml</DependentUpon>
+    </Compile>
     <Page Include="GlobalStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -171,6 +182,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UIElements\DocumentViewer\DocumentViewerLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UIElements\DocumentViewer\DocumentViewerLineGroup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UIElements\Pages\WelcomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -218,6 +237,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\AboutUs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -237,6 +260,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include=".editorconfig" />
+    <None Include="ClassDiagram2.cd" />
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -264,6 +289,60 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\icons8-add-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icons8-json-80.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icons8-tree-structure-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icons8-add-file-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-add-to-collection-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add-database.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\connect-db.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\disconnect-db.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\open-db.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\database_rDV_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\database.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icons8-about-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icons8-stack-of-paper-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add-collection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\show-collection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icons8-export-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icons8-import-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\vaciar-datos.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\rename-collection.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

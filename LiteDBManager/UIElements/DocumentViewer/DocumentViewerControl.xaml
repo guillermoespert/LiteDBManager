@@ -8,14 +8,27 @@
              d:DesignHeight="80" d:DesignWidth="800" MouseDoubleClick="UserControl_MouseDoubleClick" MouseUp="UserControl_MouseUp">
     <Border x:Name="brdControlBorder" BorderThickness="1" CornerRadius="2" Padding="0" Margin="0,0,0,5" BorderBrush="#FFC7BFBF" MouseMove="Border_MouseMove" MouseLeave="brdControlBorder_MouseLeave">
         <Grid Margin="0">
-            <StackPanel x:Name="stpLinesContainer" Orientation="Vertical" Margin="0"/>
+            <Grid x:Name="grdTextCodeEditor" d:IsHidden="True">
+                <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit" x:Name="txtCodeEditor" FontFamily="Consolas" SyntaxHighlighting="Json" FontSize="10pt" IsEnabled="False" HorizontalScrollBarVisibility="Auto" ShowLineNumbers="True"/>
+            </Grid>
+            <StackPanel x:Name="stpLinesContainer" Orientation="Vertical" Margin="5,0,0,0"/>
             <Grid x:Name="paneEdition" Height="30" VerticalAlignment="Bottom" Background="#FFE3DAC9" Visibility="Collapsed">
                 <Button x:Name="btnUpdate" Content="Actualizar" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Width="75" Click="btnUpdate_Click"/>
                 <Button x:Name="btnCancel" Content="Cancelar" HorizontalAlignment="Left" Margin="99,0,0,0" VerticalAlignment="Center" Width="75" Click="btnCancel_Click"/>
             </Grid>
-            <Button x:Name="btnDeleteDocument" Width="32" Style="{DynamicResource TransparentButton}" Height="32" Margin="0,0,5,0" ToolTip="Eliminar esta documento" HorizontalAlignment="Right" VerticalAlignment="Center" Visibility="Hidden" PreviewMouseMove="btnDeleteDocument_PreviewMouseMove" Click="btnDeleteDocument_Click">
-                <Image x:Name="image1" Source="/LiteDBManager;component/Resources/icons8-remove-96.png" Margin="0,0,0,1" d:IsLocked="True"/>
-            </Button>
+            <Grid x:Name="grdButtons" Margin="0,0,5,0" VerticalAlignment="Center">
+                <StackPanel Orientation="Vertical">
+                    <Button x:Name="btnToggleEditor" Width="32" Style="{DynamicResource TransparentButton}" Height="32" ToolTip="Cambiar el tipo de editor" HorizontalAlignment="Right" VerticalAlignment="Center" PreviewMouseMove="btnDeleteDocument_PreviewMouseMove" Margin="0,0,0,10" Click="btnToggleEditor_Click">
+                        <Image x:Name="imgToggleButton" Source="/LiteDBManager;component/Resources/icons8-json-80.png" Margin="0,0,0,1"/>
+                    </Button>
+
+                    <Button x:Name="btnDeleteDocument" Width="32" Style="{DynamicResource TransparentButton}" Height="32" ToolTip="Eliminar este documento" HorizontalAlignment="Right" VerticalAlignment="Center" PreviewMouseMove="btnDeleteDocument_PreviewMouseMove" Click="btnDeleteDocument_Click">
+                        <Image x:Name="image1" Source="/LiteDBManager;component/Resources/icons8-remove-96.png" Margin="0,0,0,1" d:IsLocked="True"/>
+                    </Button>
+
+                </StackPanel>
+
+            </Grid>
 
         </Grid>
     </Border>

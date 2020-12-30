@@ -22,7 +22,7 @@ namespace LiteDBManager.Structures
         /// <summary>
         /// Instancia del motor de LiteDB para el ConnectionString actual
         /// </summary>
-        public LiteDatabase LiteDatabase { get; private set; }
+        public LiteDatabase LiteDatabase { get; set; }
 
         /// <summary>
         /// Página usada para el despliege de la lista de colecciones para la base de datos

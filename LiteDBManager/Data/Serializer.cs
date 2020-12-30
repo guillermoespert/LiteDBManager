@@ -16,6 +16,22 @@ namespace LiteDBManager.Data
     /// </summary>
     public abstract class Serializer
     {
+        public CollectionsWrapperDO CollectionsWrapperDO
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public CollectionDO CollectionDO
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
         public abstract StringWriter Serialize(CollectionsWrapperDO collectionsWrapper);
 
         public abstract CollectionsWrapperDO Deserialize(string data);

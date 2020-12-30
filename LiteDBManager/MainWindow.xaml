@@ -5,14 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LiteDBManager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="768" Width="1024" Closing="Window_Closing" WindowStartupLocation="CenterScreen">
+        Title="LiteDB Manager" Height="768" Width="1024" Closing="Window_Closing" WindowStartupLocation="CenterScreen" Icon="Resources/database_rDV_icon.ico">
     <DockPanel LastChildFill="True">
+        <ToolBarTray VerticalAlignment="Top" DockPanel.Dock="Top">
+            <ToolBar x:Name="tbMainToolbar" VerticalAlignment="Top">
+                <Button x:Name="btnCreateDb" VerticalAlignment="Top" Click="btnCreateDB_Click" ToolTip="Crear nueva base de datos">
+                    <Image x:Name="image" Source="Resources/add-database.png" Width="48" Height="48"/>
+                </Button>
+                <Button x:Name="btnOpenDb" VerticalAlignment="Top" Click="btnOpenDB_Click" ToolTip="Abrir base de datos existente">
+                    <Image x:Name="image1" Source="Resources/open-db.png" Width="48" Height="48" d:IsLocked="True"/>
+                </Button>
+                <Separator Margin="0" Width="2"/>
+                <Button x:Name="btnExportSelected" VerticalAlignment="Top" ToolTip="Exportar los elementos seleccionados" Click="btnExportSelected_Click" IsEnabled="False">
+                    <Image x:Name="image5" Source="Resources/icons8-export-96.png" Width="48" Height="48" d:IsLocked="True"/>
+                </Button>
+                <Button x:Name="btnImportSelected" VerticalAlignment="Top" ToolTip="Importar datos" Click="btnImportSelected_Click" IsEnabled="False">
+                    <Image x:Name="image6" Source="Resources/icons8-import-96.png" Width="48" Height="48" d:IsLocked="True"/>
+                </Button>
+                <Separator Margin="0" Width="2"/>
+                <Button x:Name="btnAboutUs" VerticalAlignment="Top" Click="btnAboutUs_Click" ToolTip="Sobre nosotros">
+                    <Image x:Name="image3" Source="Resources/icons8-about-96.png" Width="48" Height="48" d:IsLocked="True"/>
+                </Button>
+            </ToolBar>
+            <ToolBar x:Name="tbDocuments" VerticalAlignment="Top">
+                <Button x:Name="btnAddDocument" VerticalAlignment="Top" IsEnabled="False" ToolTip="Añadir un documento" Click="btnAddDocument_Click">
+                    <Image x:Name="image7" Source="Resources/icons8-add-file-96.png" Width="48" Height="48" ToolTip="Ver colecciones" d:IsLocked="True"/>
+                </Button>
+            </ToolBar>
+            <ToolBar x:Name="tbCollections" VerticalAlignment="Top">
+                <Button x:Name="btnShowCollections" VerticalAlignment="Top" IsEnabled="False" Click="btnShowCollections_Click" ToolTip="Ver colecciones">
+                    <Image x:Name="image2" Source="Resources/show-collection.png" Width="48" Height="48" ToolTip="Ver colecciones" d:IsLocked="True"/>
+                </Button>
+                <Button x:Name="btnAddCollection" VerticalAlignment="Top" IsEnabled="False" ToolTip="Añadir colección" Click="btnAddCollection_Click">
+                    <Image x:Name="image4" Source="Resources/add-collection.png" Width="48" Height="48" ToolTip="Ver colecciones" d:IsLocked="True"/>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
         <Grid Width="230" DockPanel.Dock="Right">
-            <StackPanel Margin="0,5,0,0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
-                <Button x:Name="btnOpenDB" Content="Abrir BD" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="btnOpenDB_Click" Margin="0"/>
-                <Button x:Name="btnCreateDB" Content="Crear BD" HorizontalAlignment="Left" Margin="15,0,0,0" VerticalAlignment="Top" Width="75" Click="btnCreateDB_Click"/>
-            </StackPanel>
-            <ScrollViewer Margin="0,30,0,0">
+            <ScrollViewer Margin="0">
                 <StackPanel>
                     <Expander x:Name="expConnections"  Header="Conexiones" Background="#FFB6B6B6" Padding="1">
                         <StackPanel x:Name="stpConnections" Orientation="Vertical" Background="#FFE5E5E5"/>
@@ -23,6 +53,6 @@
                 </StackPanel>
             </ScrollViewer>
         </Grid>
-        <Frame x:Name="frmDbManager" NavigationUIVisibility="Hidden" Focusable="False" IsTabStop="False" />
+        <Frame x:Name="frmDbManager" NavigationUIVisibility="Hidden" Focusable="False" IsTabStop="False" Navigated="frmDbManager_Navigated" />
     </DockPanel>
 </Window>
