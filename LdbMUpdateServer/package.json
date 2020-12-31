@@ -1,0 +1,25 @@
+{
+  "name": "ldbmupdateserver",
+  "version": "1.0.0",
+  "description": "Servidor para la gestión de las actualizaciones",
+  "main": "main.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guillermoespert/LiteDBManager.git"
+  },
+  "author": "Guillermo Espert Carrasquer",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/guillermoespert/LiteDBManager/issues"
+  },
+  "homepage": "https://github.com/guillermoespert/LiteDBManager#readme"
+}
