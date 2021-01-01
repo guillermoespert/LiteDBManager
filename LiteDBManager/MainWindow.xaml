@@ -27,6 +27,11 @@
                     <Image x:Name="image3" Source="Resources/icons8-about-96.png" Width="48" Height="48" d:IsLocked="True"/>
                 </Button>
             </ToolBar>
+            <ToolBar x:Name="tbCommandConsole" VerticalAlignment="Top">
+                <Button x:Name="btnShowCommandsPage" VerticalAlignment="Top" IsEnabled="False" ToolTip="Ejecutar commandos SQL" Click="btnShowCommandsPage_Click">
+                    <Image x:Name="image8" Source="Resources/icons8-run-command-96.png" Width="48" Height="48" ToolTip="Ver colecciones" d:IsLocked="True"/>
+                </Button>
+            </ToolBar>
             <ToolBar x:Name="tbDocuments" VerticalAlignment="Top">
                 <Button x:Name="btnAddDocument" VerticalAlignment="Top" IsEnabled="False" ToolTip="Añadir un documento" Click="btnAddDocument_Click">
                     <Image x:Name="image7" Source="Resources/icons8-add-file-96.png" Width="48" Height="48" ToolTip="Ver colecciones" d:IsLocked="True"/>

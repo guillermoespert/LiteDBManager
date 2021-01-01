@@ -66,10 +66,16 @@ namespace LiteDBManager
 
         private void frmDbManager_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            if(DbConnections.CurrentConnection != null)
+            if (DbConnections.CurrentConnection != null)
+            {
                 btnShowCollections.IsEnabled = true;
+                btnShowCommandsPage.IsEnabled = true;
+            }
             else
+            {
                 btnShowCollections.IsEnabled = false;
+                btnShowCommandsPage.IsEnabled = false;
+            }
 
             if(frmDbManager.Content is CollectionsManagementPage)
             {
@@ -133,6 +139,14 @@ namespace LiteDBManager
             if (frmDbManager.Content != null && frmDbManager.Content is DataManipulation)
             {
                 ((DataManipulation)frmDbManager.Content).AddItem();
+            }
+        }
+
+        private void btnShowCommandsPage_Click(object sender, RoutedEventArgs e)
+        {
+            if (DbConnections.CurrentConnection != null)
+            {
+                PageNavigationService.ShowPage(DbConnections.CurrentConnection.CommandManagementPage);
             }
         }
     }

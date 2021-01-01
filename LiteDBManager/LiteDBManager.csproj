@@ -119,6 +119,9 @@
     <Compile Include="UIElements\DocumentViewer\FoldingGroup.cs" />
     <Compile Include="UIElements\DocumentViewer\LineEventArgs.cs" />
     <Compile Include="UIElements\DocumentViewer\LineType.cs" />
+    <Compile Include="UIElements\Pages\CommandManagementPage.xaml.cs">
+      <DependentUpon>CommandManagementPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UIElements\Pages\DataManipulation.cs" />
     <Compile Include="UIElements\Pages\WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
@@ -186,6 +189,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UIElements\DocumentViewer\DocumentViewerLineGroup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UIElements\Pages\CommandManagementPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -341,6 +348,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\rename-collection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icons8-play-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icons8-run-command-96.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

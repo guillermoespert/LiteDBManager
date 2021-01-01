@@ -243,6 +243,16 @@ namespace LiteDBManager.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_run_command_96 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_run_command_96", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_stack_of_paper_96 {
             get {
                 object obj = ResourceManager.GetObject("icons8_stack_of_paper_96", resourceCulture);

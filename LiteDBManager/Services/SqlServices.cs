@@ -43,6 +43,17 @@ namespace LiteDBManager.Services
         /// <returns>true si correcto o false en caso contrario.</returns>
         public static bool DeleteDocument(BsonDocument bsonDoc)
         {
+            return DeleteDocument(bsonDoc, DbConnections.CurrentConnection.EditingCollection);
+        }
+
+        /// <summary>
+        /// Elimina un documento dado de la colección dada
+        /// </summary>
+        /// <param name="collection">Nombre de la colección</param>
+        /// <param name="bsonDoc">Documento a eliminar</param>
+        /// <returns>true si correcto o false en caso contrario.</returns>
+        public static bool DeleteDocument(BsonDocument bsonDoc, string collection)
+        {
             try
             {
                 var id = "";
@@ -52,6 +63,7 @@ namespace LiteDBManager.Services
                     if (value.Key.Equals("_id"))
                     {
                         id = value.Value.ToString();
+
                         break;
                     }
                 }
@@ -64,11 +76,13 @@ namespace LiteDBManager.Services
                 }
 
                 var query = string.Format("DELETE {0} WHERE _id = {1}",
-                    DbConnections.CurrentConnection.EditingCollection,
+                    collection,
                     id);
 
                 DbConnections.CurrentConnection.LiteDatabase.Execute(query);
-                DbConnections.CurrentConnection.DocumentManagementPages[DbConnections.CurrentConnection.EditingCollection].LoadDocuments();
+
+                if(DbConnections.CurrentConnection.EditingCollection != null)
+                    DbConnections.CurrentConnection.DocumentManagementPages[DbConnections.CurrentConnection.EditingCollection].LoadDocuments();
 
                 return true;
             }

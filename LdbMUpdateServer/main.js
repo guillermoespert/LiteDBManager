@@ -7,8 +7,8 @@ app.get('/', function (req, res) {
 
 app.get('/lastversion', function(req, res) {
     res.json({
-        version : "0.1",
-        downloadUrl : "http://localhost:8085/downloads/test.txt"
+        Version : "0.2",
+        DownloadUrl : "http://localhost:8085/downloads/LiteDBManager.zip"
     })
 })
 

@@ -41,6 +41,8 @@ namespace LiteDBManager.UIElements.DocumentViewer
 
         public bool IsEditingTextual { get; private set; }
 
+        public string Collection { get; set; }
+
         public DocumentViewerControl(BsonDocument document) : this(document as BsonValue)
         { }
 
@@ -212,7 +214,14 @@ namespace LiteDBManager.UIElements.DocumentViewer
                 doc = ParseDocument();
             }
 
-            var collection = DbConnections.CurrentConnection.LiteDatabase.GetCollection(DbConnections.CurrentConnection.EditingCollection);
+            string collectionName;
+
+            if (string.IsNullOrWhiteSpace(Collection))
+                collectionName = DbConnections.CurrentConnection.EditingCollection;
+            else
+                collectionName = Collection;
+
+            var collection = DbConnections.CurrentConnection.LiteDatabase.GetCollection(collectionName);
             collection.Update(doc);
             DbConnections.CurrentConnection.LiteDatabase.Commit();
 
@@ -356,7 +365,18 @@ namespace LiteDBManager.UIElements.DocumentViewer
 
         private void btnDeleteDocument_Click(object sender, RoutedEventArgs e)
         {
-            DeleteDocument?.Invoke(this, new EventArgs());
+            if(Collection != null)
+            {
+                var result = MessageBox.Show(MainService.MainWindow, "El documento seleccionado será eliminado de forma permanente.\n¿Esta seguro que desea eliminar este documento?", "Confirmar eliminación", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    SqlServices.DeleteDocument((BsonDocument)Document, Collection);
+                    stpLinesContainer.Children.Remove(this);
+                }
+            }
+            else
+                DeleteDocument?.Invoke(this, new EventArgs());
         }
 
         private void UserControl_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)

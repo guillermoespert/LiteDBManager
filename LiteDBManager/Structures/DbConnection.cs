@@ -3,6 +3,7 @@ using LiteDB;
 using LiteDB.Engine;
 using System.Collections.Generic;
 using System.Globalization;
+using LiteDBManager.UIElements.Pages;
 
 namespace LiteDBManager.Structures
 {
@@ -11,7 +12,7 @@ namespace LiteDBManager.Structures
         public DbConnection(ConnectionString connString)
         {
             ConnectionData = connString;
-            LiteDatabase = new LiteDatabase(connString);
+            liteDatabase = new LiteDatabase(connString);
         }
 
         /// <summary>
@@ -22,7 +23,23 @@ namespace LiteDBManager.Structures
         /// <summary>
         /// Instancia del motor de LiteDB para el ConnectionString actual
         /// </summary>
-        public LiteDatabase LiteDatabase { get; set; }
+        public LiteDatabase LiteDatabase 
+        { 
+            get
+            {
+                lock(objectLock)
+                {
+                    return liteDatabase;
+                }
+            }
+            set
+            {
+                lock(objectLock)
+                {
+                    liteDatabase = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Página usada para el despliege de la lista de colecciones para la base de datos
@@ -37,6 +54,23 @@ namespace LiteDBManager.Structures
                 }
 
                 return collectionsManagement;
+            }
+        }
+
+        /// <summary>
+        /// Página usada para la gestión de la base de datos basada en comandos
+        /// SQL.
+        /// </summary>
+        public CommandManagementPage CommandManagementPage
+        {
+            get
+            {
+                if(commandManagement == null)
+                {
+                    commandManagement = new CommandManagementPage();
+                }
+
+                return commandManagement;
             }
         }
 
@@ -70,5 +104,8 @@ namespace LiteDBManager.Structures
         }
 
         private CollectionsManagementPage collectionsManagement;
+        private CommandManagementPage commandManagement;
+        private LiteDatabase liteDatabase;
+        private object objectLock = new object();
     }
 }
