@@ -46,8 +46,17 @@
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <Grid Width="230" DockPanel.Dock="Right">
-            <ScrollViewer Margin="0">
+        <StatusBar Height="30" DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
+            <TextBlock x:Name="tbkStatusMessage" TextWrapping="Wrap" FontSize="14" Margin="5,0,0,0"/>
+            <ProgressBar x:Name="pgrbDownload" Height="20" VerticalAlignment="Center" Width="150" HorizontalAlignment="Left" Margin="5,0,0,0" Visibility="Collapsed"/>
+        </StatusBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="733*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="265*"/>
+            </Grid.ColumnDefinitions>
+            <ScrollViewer Margin="0" Grid.Column="2">
                 <StackPanel>
                     <Expander x:Name="expConnections"  Header="Conexiones" Background="#FFB6B6B6" Padding="1">
                         <StackPanel x:Name="stpConnections" Orientation="Vertical" Background="#FFE5E5E5"/>
@@ -57,7 +66,8 @@
                     </Expander>
                 </StackPanel>
             </ScrollViewer>
+            <Frame x:Name="frmDbManager" NavigationUIVisibility="Hidden" Focusable="False" IsTabStop="False" Navigated="frmDbManager_Navigated" Margin="0" />
+            <GridSplitter x:Name="gridSplitter" Grid.Column="1" HorizontalAlignment="Left" Margin="0" Width="5" ResizeBehavior="PreviousAndNext"/>
         </Grid>
-        <Frame x:Name="frmDbManager" NavigationUIVisibility="Hidden" Focusable="False" IsTabStop="False" Navigated="frmDbManager_Navigated" />
     </DockPanel>
 </Window>

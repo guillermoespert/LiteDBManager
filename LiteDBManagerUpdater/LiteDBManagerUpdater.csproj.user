@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <StartArguments>"C:\Users\gespe\AppData\Local\Temp\LiteDBManager\LiteDBManager-0.2.zip" "C:\Users\gespe\OneDrive\Cursos\Grau Ingenieria Informatica\Curs 4\TFG\LiteDBManager\LiteDBManager\bin\Debug"</StartArguments>
+    <StartWorkingDirectory>C:\Users\gespe\OneDrive\Cursos\Grau Ingenieria Informatica\Curs 4\TFG\LiteDBManager\LiteDBManager\bin\Debug\</StartWorkingDirectory>
+  </PropertyGroup>
+</Project>

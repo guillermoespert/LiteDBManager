@@ -1,5 +1,5 @@
 packages/
-LiteDBManager/bin/
-LiteDBManager/obj/
+bin/
+obj/
 UpgradeLog.htm
 node_modules/

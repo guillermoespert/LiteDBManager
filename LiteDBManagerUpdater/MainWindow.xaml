@@ -1,0 +1,15 @@
+﻿<Window x:Class="LiteDBManagerUpdater.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LiteDBManagerUpdater"
+        mc:Ignorable="d"
+        Title="LiteDBManager - Actualización de la aplicación" Height="327.188" Width="731.562" Icon="Resources/database_rDV_icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <StackPanel x:Name="stpUpdateInfo" Margin="10,53,140,10"/>
+        <Image x:Name="image" HorizontalAlignment="Right" Height="100" Margin="0,0,15,0" VerticalAlignment="Center" Width="100" Source="Resources/database.png"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="18,10,0,0" TextWrapping="Wrap" Text="Actualización de LiteDB Manager" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
+
+    </Grid>
+</Window>
