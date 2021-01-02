@@ -1,2 +1,0 @@
-C:\Users\gespe\OneDrive\Cursos\Grau Ingenieria Informatica\Curs 4\TFG\LiteDBManager\LdbMUpdateServer\obj\Debug\LiteDBManagerUpdateServer.njsproj.CoreCompileInputs.cache
-C:\Users\gespe\OneDrive\Cursos\Grau Ingenieria Informatica\Curs 4\TFG\LiteDBManager\LdbMUpdateServer\bin\Microsoft.NodejsTools.WebRole.dll
