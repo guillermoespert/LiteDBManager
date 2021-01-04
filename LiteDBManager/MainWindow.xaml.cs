@@ -32,6 +32,14 @@ namespace LiteDBManager
             CheckForUpdates();
         }
 
+        public CommandManagementPage CommandManagementPage
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
         private void btnCreateDB_Click(object sender, RoutedEventArgs e)
         {
             ConnectionString ConnectionData = new ConnectionString();

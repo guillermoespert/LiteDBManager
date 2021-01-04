@@ -7,7 +7,7 @@ app.get('/', function (req, res) {
 
 app.get('/lastversion', function(req, res) {
     res.json({
-        Version : "0.1",
+        Version : "0.2",
         DownloadUrl : "http://localhost:8085/downloads/LiteDBManager-0.2.zip"
     })
 })
@@ -29,5 +29,5 @@ var server = app.listen(8085, function(){
     var host = server.address().address
     var port = server.address().port
 
-    console.log('Servidor activo en http://%s:%s', host, port)
+    console.log('Servidor activo en http://127.0.0.1:%s', port)
 })

@@ -31,6 +31,14 @@ namespace LiteDBManager.UIElements.Pages
             InitializeComponent();
         }
 
+        public DocumentViewerControl DocumentViewerControl
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
         private void btnExecute_Click(object sender, RoutedEventArgs e)
         {
             ExecuteCommand();

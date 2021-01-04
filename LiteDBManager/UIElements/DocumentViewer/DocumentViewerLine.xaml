@@ -19,7 +19,7 @@
     <Grid x:Name="controlGrid" PreviewMouseMove="controlGrid_PreviewMouseMove" MouseLeave="controlGrid_MouseLeave" Background="#00000000">
         <Border x:Name="controlBorder" VerticalAlignment="Top" Height="16" Margin="0,0,100,0" Grid.ColumnSpan="2">
             <StackPanel x:Name="stpEditLine" Orientation="Horizontal">
-                <TextBlock x:Name="tbkLineNumber" TextWrapping="Wrap" Text="9999" FontFamily="Consolas" Padding="0,0,5,0" Width="32"/>
+                <TextBlock x:Name="tbkLineNumber" TextWrapping="Wrap" Text="9999" FontFamily="Consolas" Padding="0,0,5,0"/>
                 <Button x:Name="btnFolding" Width="12" Background="#00000000" BorderBrush="{x:Null}" Foreground="{x:Null}" Padding="0" Height="12" Visibility="Hidden" Click="btnFolding_Click">
                     <Image x:Name="imgFoldingCaret" Source="/LiteDBManager;component/Resources/icons8-forward-24.png" Stretch="Fill" d:IsLocked="True"/>
                 </Button>
